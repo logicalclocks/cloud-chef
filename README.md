@@ -1,2 +1,4 @@
 # cloud-chef
-Recipes to setup Hopsworks Cloud AMIs
+
+TODO: Enter the cookbook description here.
+
