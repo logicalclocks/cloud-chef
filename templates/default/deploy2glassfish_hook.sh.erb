@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+## DO NOT set -e
+
+## Bash script to run after a successful renewal of Let's Encrypt certificate
+## Put it in /etc/letsencrypt/renewal-hooks/deploy and it will be executed
+## by certbot upon a successful renewal
+
+KEYSTOREPW=<%= node['hopsworks']['master']['password'] %>
+BASE=/etc/letsencrypt/live
+GF_DOMAIN=<%= node['hopsworks']['domains_dir'] %>/<%= node['hopsworks']['domain_name'] %>
+GF_USER=<%= node['hopsworks']['user'] %>
+GF_GROUP=<%= node['hopsworks']['group'] %>
+
+TMP="/root/letsencrypt/tmp"
+mkdir -p $TMP
+
+DATE=$(date +%Y-%m-%d)
+BACKUP_DIR="/root/letsencrypt/backup/$DATE"
+mkdir -p $BACKUP_DIR
+
+cp -f "$GF_DOMAIN/config/keystore.jks" $BACKUP_DIR
+cp -f "$GF_DOMAIN/config/cacerts.jks" $BACKUP_DIR
+
+
+# There should only be one domain name
+for domain in $BASE/*; do
+    if [ -d $domain ] && [[ $domain =~ .*\.aws\.hopsworks\.ai ]]; then
+        working_dir=$domain
+        working_domain=$(basename $domain)
+    fi
+done
+
+[[ -d $working_dir ]] || exit 2
+
+cp -f "$GF_DOMAIN/config/keystore.jks" $TMP
+cp -f "$GF_DOMAIN/config/cacerts.jks" $TMP
+
+pushd $TMP
+# Bundle private key and certificate
+openssl pkcs12 -export -in ${working_dir}/cert.pem -inkey ${working_dir}/privkey.pem -out cert_and_key.p12 -name ${working_domain} -CAfile ${working_dir}/chain.pem -caname root -password pass:$KEYSTOREPW
+# Remove existing/old certificate for the domain
+keytool -delete -keystore keystore.jks -alias ${working_domain} -srcstorepass $KEYSTOREPW -deststorepass $KEYSTOREPW -destkeypass $KEYSTOREPW
+# Import new private key and certificate bundle
+keytool -importkeystore -destkeystore keystore.jks -srckeystore cert_and_key.p12 -srcstoretype PKCS12 -alias ${working_domain} -srcstorepass $KEYSTOREPW -deststorepass $KEYSTOREPW -destkeypass $KEYSTOREPW
+# Remove old root certificate from trust anchor
+keytool -delete -keystore keystore.jks -alias root -srcstorepass $KEYSTOREPW -deststorepass $KEYSTOREPW -destkeypass $KEYSTOREPW
+# Add new root certificate as trust anchor
+keytool -import -noprompt -trustcacerts -alias root -file ${working_dir}/chain.pem -keystore keystore.jks -srcstorepass $KEYSTOREPW -deststorepass $KEYSTOREPW -destkeypass $KEYSTOREPW
+
+# Bundle for glassfish-instance
+openssl pkcs12 -export -in ${working_dir}/fullchain.pem -inkey ${working_dir}/privkey.pem -out pkcs.p12 -name glassfish-instance -password pass:$KEYSTOREPW
+keytool -delete -keystore keystore.jks -alias glassfish-instance -srcstorepass $KEYSTOREPW -deststorepass $KEYSTOREPW -destkeypass $KEYSTOREPW
+keytool -importkeystore -destkeystore keystore.jks -srckeystore pkcs.p12 -srcstoretype PKCS12 -alias glassfish-instance -srcstorepass $KEYSTOREPW -deststorepass $KEYSTOREPW -destkeypass $KEYSTOREPW
+openssl pkcs12 -export -in ${working_dir}/fullchain.pem -inkey ${working_dir}/privkey.pem -out pkcs.p12 -name s1as -password pass:$KEYSTOREPW
+keytool -delete -keystore keystore.jks -alias s1as -srcstorepass $KEYSTOREPW -deststorepass $KEYSTOREPW -destkeypass $KEYSTOREPW
+keytool -importkeystore -destkeystore keystore.jks -srckeystore pkcs.p12 -srcstoretype PKCS12 -alias s1as -srcstorepass $KEYSTOREPW -deststorepass $KEYSTOREPW -destkeypass $KEYSTOREPW
+
+keytool -export -alias glassfish-instance -file glassfish-instance.cert -keystore keystore.jks -storepass $KEYSTOREPW
+keytool -export -alias s1as -file s1as.cert -keystore keystore.jks -storepass $KEYSTOREPW
+
+mv -f keystore.jks ${GF_DOMAIN}/config/keystore.jks
+mv -f cacerts.jks ${GF_DOMAIN}/config/cacerts.jks
+
+pushd ${GF_DOMAIN}/config
+chown ${GF_USER}:${GF_GROUP} keystore.jks
+chmod 600 keystore.jks
+
+chown ${GF_USER}:${GF_GROUP} cacerts.jks
+chmod 655 cacerts.jks
+
+systemctl restart glassfish-<%= node['hopsworks']['domain_name'] %>
