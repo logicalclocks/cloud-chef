@@ -11,3 +11,13 @@ bin/*
 *~
 .\#*
 \#*\#
+.vscode
+
+__pycache__/
+*.pyc
+eggs/
+.eggs/
+*.egg-info/
+wheels/
+.pytest_cache/
+.mypy_cache
