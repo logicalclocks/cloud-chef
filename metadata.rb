@@ -1,20 +1,29 @@
-name 'cloud-chef'
+name 'cloud'
 maintainer 'Antonios Kouzoupis'
 maintainer_email 'antonios@logicalclocks.com'
 license 'Apache License Version 2.0'
 description 'Installs/Configures cloud-chef'
 long_description 'Installs/Configures cloud-chef'
+source_url 'https://github.com/logicalclocks/cloud-chef'
+issues_url 'https://github.com/logicalclocks/cloud-chef/issues'
 version '0.1.0'
 chef_version '>= 12.1' if respond_to?(:chef_version)
 
-# The `issues_url` points to the location where issues for this cookbook are
-# tracked.  A `View Issues` link will be displayed on this cookbook's page when
-# uploaded to a Supermarket.
-#
-# issues_url 'https://github.com/<insert_org_here>/cloud-chef/issues'
+depends 'conda'
+depends 'kagent'
+depends 'hopsworks'
 
-# The `source_url` points to the development reposiory for this cookbook.  A
-# `View Source` link will be displayed on this cookbook's page when uploaded to
-# a Supermarket.
-#
-# source_url 'https://github.com/<insert_org_here>/cloud-chef'
+recipe "install", "Copies and templates necessary files"
+recipe "default", "Creates Anaconda environment and setup systemd unit"
+
+attribute "cloud/init/install_dir",
+          :description => "Installation directory for ec2_init",
+          :type => 'string'
+
+attribute "cloud/init/version",
+          :description => "Version of ec2init script",
+          :type => 'string'
+
+attribute "cloud/init/config/lets_encrypt_dir",
+          :description => "Let's Encrypt installation directory",
+          :type => 'string'

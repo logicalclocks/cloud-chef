@@ -1,0 +1,10 @@
+[general]
+installation_dir = <%= node['cloud']['init']['install_dir'] %>/ec2init
+log_level = DEBUG
+
+[executor]
+max_procedure_retry = 5
+
+[initplan]
+hosted_zone = <%= node['cloud']['init']['config']['hosted_zone'] %>
+lets_encrypt_dir = <%= node['cloud']['init']['config']['lets_encrypt_dir'] %>

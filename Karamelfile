@@ -1,0 +1,4 @@
+dependencies: 
+  - recipe: cloud::default
+    global:  
+      - conda::default
