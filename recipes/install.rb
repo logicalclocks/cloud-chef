@@ -55,3 +55,4 @@ when "rhel"
 end
 
 package "certbot"
+package "curl"
