@@ -1,0 +1,14 @@
+[Unit]
+Description = One shot script to update instance status in Hopsworks Cloud
+After = syslog.target network.target remote-fs.target glassfish-domain1.service
+
+[Service]
+User = root
+
+ExecStart = <%= node['cloud']['init']['install_dir'] %>/ec2init/run_ec2_update.sh
+
+Type = oneshot
+RemainAfterExit = yes
+
+[Install]
+WantedBy = multi-user.target

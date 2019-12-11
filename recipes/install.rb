@@ -11,6 +11,13 @@ template "#{node['cloud']['init']['install_dir']}/ec2init/run_ec2_init.sh" do
     mode 0500
 end
 
+template "#{node['cloud']['init']['install_dir']}/ec2init/run_ec2_update.sh" do
+    source "run_ec2_update.sh.erb"
+    user "root"
+    group "root"
+    mode 0500
+end
+
 template "#{node['cloud']['init']['install_dir']}/ec2init/deploy2glassfish_hook.sh" do
   source "deploy2glassfish_hook.sh.erb"
   user "root"
@@ -50,9 +57,18 @@ when "debian"
       apt-get update
     EOF
   end
+  systemd_directory = "/lib/systemd/system"
 when "rhel"
   package "epel-release"
+  systemd_directory = "/usr/lib/systemd/system"
 end
 
 package "certbot"
 package "curl"
+
+template "#{systemd_directory}/ec2update.service" do
+  source "ec2update.service.erb"
+  owner "root"
+  group "root"
+  mode 0664
+end
