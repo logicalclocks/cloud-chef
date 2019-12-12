@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+
+## Helper script to run ec2update
+source <%= node['conda']['base_dir'] %>/bin/activate cloud
+
+ec2update --config <%= node['cloud']['init']['install_dir'] %>/ec2init/ec2update.ini
