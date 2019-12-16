@@ -1,6 +1,7 @@
 [general]
 installation_dir = <%= node['cloud']['init']['install_dir'] %>/ec2init
 log_level = DEBUG
+kagent_conf_dir = <%= node["kagent"]["etc"] %>
 
 [executor]
 max_procedure_retry = 5
