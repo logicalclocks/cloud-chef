@@ -25,7 +25,7 @@ cp -f "$GF_DOMAIN/config/cacerts.jks" $BACKUP_DIR
 
 # There should only be one domain name
 for domain in $BASE/*; do
-    if [ -d $domain ] && [[ $domain =~ .*\.aws\.hopsworks\.ai ]]; then
+    if [ -d $domain ] && [[ $domain =~ .*aws\.hopsworks\.ai ]]; then
         working_dir=$domain
         working_domain=$(basename $domain)
     fi
