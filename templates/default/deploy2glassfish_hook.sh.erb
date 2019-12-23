@@ -59,6 +59,12 @@ keytool -importkeystore -destkeystore keystore.jks -srckeystore pkcs.p12 -srcsto
 keytool -export -alias glassfish-instance -file glassfish-instance.cert -keystore keystore.jks -storepass $KEYSTOREPW
 keytool -export -alias s1as -file s1as.cert -keystore keystore.jks -storepass $KEYSTOREPW
 
+# Update Glassfish CA certs
+keytool -delete -keystore cacerts.jks -alias s1as -storepass $KEYSTOREPW
+keytool -import -noprompt -alias s1as -file s1as.cert -keystore cacerts.jks -storepass $KEYSTOREPW
+keytool -delete -keystore cacerts.jks -alias glassfish-instance -storepass $KEYSTOREPW
+keytool -import -noprompt -alias glassfish-instance -file glassfish-instance.cert -keystore cacerts.jks -storepass $KEYSTOREPW
+
 mv -f keystore.jks ${GF_DOMAIN}/config/keystore.jks
 mv -f cacerts.jks ${GF_DOMAIN}/config/cacerts.jks
 
