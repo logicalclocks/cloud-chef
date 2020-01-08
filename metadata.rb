@@ -6,7 +6,7 @@ description 'Installs/Configures cloud-chef'
 long_description 'Installs/Configures cloud-chef'
 source_url 'https://github.com/logicalclocks/cloud-chef'
 issues_url 'https://github.com/logicalclocks/cloud-chef/issues'
-version '0.1.0'
+version '1.1'
 chef_version '>= 12.1' if respond_to?(:chef_version)
 
 depends 'conda'
