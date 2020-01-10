@@ -12,6 +12,7 @@ chef_version '>= 12.1' if respond_to?(:chef_version)
 depends 'conda'
 depends 'kagent'
 depends 'hopsworks'
+depends 'hadoop_spark'
 
 recipe "install", "Copies and templates necessary files"
 recipe "default", "Creates Anaconda environment and setup systemd unit"
