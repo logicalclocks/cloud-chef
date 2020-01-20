@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+set -e
+
+PASSWORD=<%= node['hopsworks']['master']['password'] %>
+CERTS_DIR=<%= node['certs']['dir'] %>
+GF_USER=<%= node['hopsworks']['user'] %>
+GF_GROUP=<%= node['hopsworks']['group'] %>
+KAGENT_CONF_DIR=<%= node["kagent"]["etc"] %>
+
+if [ ! -d ${CERTS_DIR} ]; then
+    exit 1
+fi
+
+pushd ${CERTS_DIR}
+
+# If private key exists, Hops CA has not been burned
+# Do not proceed initializing it
+if [ -f "private/ca.key.pem" ]; then
+    exit 0
+fi
+
+# Init Hops root CA
+touch index.txt
+echo 1000 > serial
+openssl genrsa -aes256 -out private/ca.key.pem -passout pass:${PASSWORD} 4096
+chmod 400 private/ca.key.pem
+
+openssl req -subj "/C=SE/ST=Sweden/L=Stockholm/O=SICS/CN=HopsRootCA" \
+    -passin pass:${PASSWORD} -passout pass:${PASSWORD} -key private/ca.key.pem \
+    -new -x509 -days 7300 -sha256 -extensions v3_ca -out certs/ca.cert.pem
+
+chmod 444 certs/ca.cert.pem
+
+# Init intermediate CA
+pushd ${CERTS_DIR}/intermediate
+touch index.txt
+echo 1000 > serial
+echo 1000 > crlnumber
+openssl genrsa -aes256 -out private/intermediate.key.pem -passout pass:${PASSWORD} 4096
+
+chown ${GF_USER}:${GF_GROUP} private/intermediate.key.pem
+chmod 440 private/intermediate.key.pem
+
+openssl req -new -sha256 -subj "/C=SE/ST=Sweden/L=Stockholm/O=SICS/CN=HopsIntermediateCA" \
+      -key private/intermediate.key.pem -passin pass:${PASSWORD} \
+      -passout pass:${PASSWORD} -out csr/intermediate.csr.pem
+
+openssl ca -batch -config ../openssl-ca.cnf -extensions v3_intermediate_ca \
+      -days 3650 -notext -md sha256 -passin pass:${PASSWORD} \
+      -in csr/intermediate.csr.pem -out certs/intermediate.cert.pem
+
+chmod 444 certs/intermediate.cert.pem
+
+cat certs/intermediate.cert.pem ../certs/ca.cert.pem > certs/ca-chain.cert.pem
+chmod 444 certs/ca-chain.cert.pem
+
+openssl ca -config openssl-intermediate.cnf -gencrl -passin pass:${PASSWORD} \
+    -out crl/intermediate.crl.pem
+
+chown ${GF_USER}:${GF_GROUP} crl/intermediate.crl.pem
+
+# Remove kagent state store so it won't revoke the previous certificate during rotation
+rm -f ${KAGENT_CONF_DIR}/state_store/crypto_material_state.pkl

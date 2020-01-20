@@ -34,3 +34,17 @@ bash "install ec2init" do
     EOF
     only_if "test -r #{Chef::Config['file_cache_path']}/ec2init-#{node['cloud']['init']['version']}-py3-none-any.whl", :user => node['conda']['user']
 end
+
+template "#{node['cloud']['init']['install_dir']}/ec2init/init_hops-ca.sh" do
+    source "init_hops-ca.sh.erb"
+    user 'root'
+    group 'root'
+    mode 0500
+end
+
+template "#{node['cloud']['init']['install_dir']}/ec2init/generate_elasticsearch_certs.sh" do
+    source "generate_elasticsearch_certs.sh.erb"
+    user 'root'
+    group 'root'
+    mode 0500
+end
