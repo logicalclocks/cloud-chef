@@ -85,5 +85,5 @@ chown ${GF_USER}:${GF_GROUP} cacerts.jks
 chmod 655 cacerts.jks
 
 systemctl restart glassfish-<%= node['hopsworks']['domain_name'] %>
-${GF_DOMAIN}/bin/domain1_asadmin disable-secure-admin
-${GF_DOMAIN}/bin/domain1_asadmin enable-secure-admin
+yes | ${GF_DOMAIN}/bin/domain1_asadmin disable-secure-admin
+yes | ${GF_DOMAIN}/bin/domain1_asadmin enable-secure-admin
