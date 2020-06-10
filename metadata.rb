@@ -25,6 +25,14 @@ attribute "cloud/init/version",
           :description => "Version of ec2init script",
           :type => 'string'
 
+attribute "cloud/init/config/hosted_zone",
+          :description => "Base hopsworks-cloud domain name",
+          :type => 'string'
+
 attribute "cloud/init/config/lets_encrypt_dir",
           :description => "Let's Encrypt installation directory",
+          :type => 'string'
+
+attribute "cloud/init/config/dev",
+          :description => "Flag to follow development code path",
           :type => 'string'
