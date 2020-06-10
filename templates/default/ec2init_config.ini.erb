@@ -6,6 +6,7 @@ certs_dir = <%= node['certs']['dir'] %>
 
 [executor]
 max_procedure_retry = 5
+skip_report = <%= node['cloud']['init']['config']['dev'] %>
 
 [initplan]
 hosted_zone = <%= node['cloud']['init']['config']['hosted_zone'] %>
