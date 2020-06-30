@@ -58,6 +58,3 @@ openssl ca -config openssl-intermediate.cnf -gencrl -passin pass:${PASSWORD} \
     -out crl/intermediate.crl.pem
 
 chown ${GF_USER}:${GF_GROUP} crl/intermediate.crl.pem
-
-# Remove kagent state store so it won't revoke the previous certificate during rotation
-rm -f ${KAGENT_CONF_DIR}/state_store/crypto_material_state.pkl

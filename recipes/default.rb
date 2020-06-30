@@ -41,10 +41,3 @@ template "#{node['cloud']['init']['install_dir']}/ec2init/init_hops-ca.sh" do
     group 'root'
     mode 0500
 end
-
-template "#{node['cloud']['init']['install_dir']}/ec2init/generate_elasticsearch_certs.sh" do
-    source "generate_elasticsearch_certs.sh.erb"
-    user 'root'
-    group 'root'
-    mode 0500
-end
