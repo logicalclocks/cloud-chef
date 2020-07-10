@@ -41,3 +41,82 @@ template "#{node['cloud']['init']['install_dir']}/ec2init/init_hops-ca.sh" do
     group 'root'
     mode 0500
 end
+
+if node['install']['cloud'].casecmp?("aws")
+  
+  remote_file "#{node['cloud']['init']['install_dir']}/awscliv2.zip" do
+    source node['cloud']['init']['awscli']['url']
+    user 'root'
+    group 'root'
+    mode 0500
+    action :create
+  end
+
+  package "unzip"
+  
+  bash "unzip and install AWS CLI V2" do
+      user 'root'
+      group 'root'
+      code <<-EOH
+          set -e
+          rm -rf #{node['cloud']['init']['install_dir']}/aws
+          unzip #{node['cloud']['init']['install_dir']}/awscliv2.zip
+          ./aws/install
+          rm #{node['cloud']['init']['install_dir']}/awscliv2.zip
+      EOH
+  end
+
+  directory node['cloud']['init']['docker']['config_dir'] do
+    owner "root"
+    group "root"
+    mode 0500
+    action :create
+  end
+
+  cookbook_file "#{node['cloud']['init']['docker']['config_dir']}/config.json" do
+      source "config.json"
+      user 'root'
+      group 'root'
+      mode 0500
+  end
+
+  if exists_local("hopsworks", "default")
+
+    directory "/home/glassfish/.docker" do
+      owner "root"
+      group "root"
+      mode 0500
+      action :create
+    end
+  
+    cookbook_file "/home/glassfish/.docker/config.json" do
+        source "config.json"
+        user 'root'
+        group 'root'
+        mode 0500
+    end
+  
+  end
+
+  directory node["install"]["aws"]["docker"]["ecr-login_dir"]  do
+    owner "root"
+    group "root"
+    mode 0500
+    action :create
+  end
+  
+  remote_file "#{node["install"]["aws"]["docker"]["ecr-login_dir"]}/docker-credential-ecr-login" do
+    source node['cloud']['init']['docker']['ecr-login']['url']
+    user 'root'
+    group 'root'
+    mode 0500
+    action :create
+  end
+
+  link "/usr/local/bin/docker-credential-ecr-login" do
+    to "#{node["install"]["aws"]["docker"]["ecr-login_dir"]}/docker-credential-ecr-login"
+    user 'root'
+    group 'root'
+    action :create
+  end
+end  
