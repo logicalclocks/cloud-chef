@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -e
+
+GLASSFISH_CONFIG_DIR=<%= node['hopsworks']['config_dir'] %>
+HOPSWORKS_CN=<%= @hopsworks_cn %>
+MASTER_PASSWORD=<%= node['hopsworks']['master']['password'] %>
+CERTS_DIR=<%= node['certs']['dir'] %>
+INTER_CERTS_DIR=$CERTS_DIR/intermediate/certs
+SBIN=<%= node['install']['sudoers']['scripts_dir'] %>
+
+SIGNED_CERT=$INTER_CERTS_DIR/${HOPSWORKS_CN}__glassfish__0.cert.pem
+
+pushd $GLASSFISH_CONFIG_DIR
+
+openssl genrsa -out internal.key 2048
+openssl req -new -key internal.key -subj "/CN=${HOPSWORKS_CN}/OU=0" -out internal.csr
+
+# Give it 10 years
+expires=$(date -d "+10 years" -u +%Y%m%d%H%M%SZ)
+$SBIN/global-ca-sign-csr.sh ${CERTS_DIR}/intermediate/openssl-intermediate.cnf $MASTER_PASSWORD usr_cert internal.csr $SIGNED_CERT $expires
+
+cat $SIGNED_CERT $INTER_CERTS_DIR/intermediate.cert.pem > internal_bundle.crt
+
+openssl pkcs12 -export -in internal_bundle.crt -inkey internal.key -out cert_and_key.p12 -name internal -CAfile $CERTS_DIR/certs/ca.cert.pem -caname internal -password pass:$MASTER_PASSWORD
+# Import into the keystore
+yes | keytool -delete -alias internal -keystore keystore.jks -storepass $MASTER_PASSWORD
+yes | keytool -importkeystore -destkeystore keystore.jks -srckeystore cert_and_key.p12 -srcstoretype PKCS12 -alias internal -srcstorepass $MASTER_PASSWORD -deststorepass $MASTER_PASSWORD -destkeypass $MASTER_PASSWORD
+
+keytool -delete -alias internal -keystore cacerts.jks -storepass $MASTER_PASSWORD
+yes | keytool -import -alias internal -file $CERTS_DIR/certs/ca.cert.pem -keystore cacerts.jks -storepass $MASTER_PASSWORD
