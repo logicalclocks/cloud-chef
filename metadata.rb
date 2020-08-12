@@ -36,3 +36,11 @@ attribute "cloud/init/config/lets_encrypt_dir",
 attribute "cloud/init/config/dev",
           :description => "Flag to follow development code path",
           :type => 'string'
+
+attribute "cloud/init/awscli/url",
+          :description => "Download url for AWS CLI",
+          :type => 'string'
+
+attribute "cloud/init/docker/ecr-login/url",
+          :description => "Download url for Amazon ECR Credential Helper",
+          :type => 'string'
