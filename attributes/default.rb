@@ -4,6 +4,7 @@ default['cloud']['init']['version']                        = '0.7'
 default['cloud']['init']['config']['hosted_zone']          = "cloud.hopsworks.ai"
 default['cloud']['init']['config']['lets_encrypt_dir']     = "/etc/letsencrypt"
 default['cloud']['init']['config']['dev']                  = "false"
+default['cloud']['init']['config']['unmanaged']            = "false"
 
 default['cloud']['init']['awscli']['url']                  = "#{node['download_url']}/cloud/awscli-exe-linux-x86_64.zip"
 default['cloud']['init']['docker']['config_dir']           = "/root/.docker"
