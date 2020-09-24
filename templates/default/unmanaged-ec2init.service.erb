@@ -1,0 +1,14 @@
+[Unit]
+Description = One shot script to initialize an unmanaged Hopsworks Image
+After = syslog.target network.target remote-fs.target
+
+[Service]
+User = root
+
+ExecStart = <%= node['cloud']['init']['install_dir'] %>/ec2init/unmanaged_ec2init.sh
+
+Type = oneshot
+RemainAfterExit = yes
+
+[Install]
+WantedBy = multi-user.target

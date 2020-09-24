@@ -37,6 +37,10 @@ attribute "cloud/init/config/dev",
           :description => "Flag to follow development code path",
           :type => 'string'
 
+attribute "cloud/init/config/unmanaged",
+          :description => "Flag to indicate unmanaged deployments aka non-Hopsworks.Ai Default: false",
+          :type => 'string'
+
 attribute "cloud/init/awscli/url",
           :description => "Download url for AWS CLI",
           :type => 'string'

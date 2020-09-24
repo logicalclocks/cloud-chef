@@ -73,6 +73,22 @@ template "#{systemd_directory}/ec2update.service" do
   mode 0664
 end
 
+if node['cloud']['init']['config']['unmanaged'].casecmp?("true")
+  template "#{node['cloud']['init']['install_dir']}/ec2init/unmanaged_ec2init.sh" do
+    source "unmanaged_ec2init.sh.erb"
+    user 'root'
+    group 'root'
+    mode 0500
+  end
+  
+  template "#{systemd_directory}/unmanaged-ec2init.service" do
+    source "unmanaged-ec2init.service.erb"
+    owner "root"
+    group "root"
+    mode 0664
+  end
+end
+
 hopsworks_cn = consul_helper.get_service_fqdn("hopsworks.glassfish")
 template "#{node['cloud']['init']['install_dir']}/ec2init/generate_glassfish_internal_x509.sh" do
     source "generate_glassfish_internal_x509.sh.erb"

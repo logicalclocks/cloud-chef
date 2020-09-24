@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+
+ARGS='
+{
+    "gateway":"",
+    "config":"<%= node['cloud']['init']['install_dir'] %>/ec2init/ec2init_config.ini",
+    "password_file":"<%= node['cloud']['init']['install_dir'] %>/ec2init/password",
+    "user_id":"",
+    "user_email":"",
+    "instance_id":"",
+    "api_key":"",
+    "region":"",
+    "cloud_provider":"aws",
+    "skip_report":"true"
+   }'
+
+<%= node['cloud']['init']['install_dir'] %>/ec2init/run_ec2_init.sh ec2init.plans.preinit.pre_init_plan.LocalhostPreInitPlan $ARGS
+<%= node['cloud']['init']['install_dir'] %>/ec2init/run_ec2_init.sh ec2init.plans.init.init_plan.AWSLocalhostInitPlan $ARGS
