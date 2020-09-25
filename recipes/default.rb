@@ -120,3 +120,9 @@ if node['install']['cloud'].casecmp?("aws")
     action :create
   end
 end  
+
+if node['cloud']['init']['config']['unmanaged'].casecmp?("true")
+  systemd_unit "unmanaged-ec2init.service" do
+    action :enable
+  end
+end

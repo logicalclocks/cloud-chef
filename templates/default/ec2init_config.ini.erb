@@ -3,6 +3,7 @@ installation_dir = <%= node['cloud']['init']['install_dir'] %>/ec2init
 log_level = DEBUG
 kagent_conf_dir = <%= node["kagent"]["etc"] %>
 certs_dir = <%= node['certs']['dir'] %>
+unmanaged = <%= node['cloud']['init']['config']['unmanaged'] %>
 
 [executor]
 max_procedure_retry = 5
