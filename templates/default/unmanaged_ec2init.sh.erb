@@ -12,7 +12,8 @@ ARGS='
     "api_key":"",
     "region":"",
     "cloud_provider":"aws",
-    "skip_report":"true"
+    "skip_report":"true",
+    "hopsworks_version": "<%= node['install']['version'] %>"
    }'
 
 <%= node['cloud']['init']['install_dir'] %>/ec2init/run_ec2_init.sh ec2init.plans.preinit.pre_init_plan.LocalhostPreInitPlan $ARGS
