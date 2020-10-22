@@ -15,3 +15,5 @@ lets_encrypt_dir = <%= node['cloud']['init']['config']['lets_encrypt_dir'] %>
 gpu_driver_url = <%= node['cloud']['init']['gpu']['driver_url'] %>
 nvidia_pkgs_url = <%= node['cloud']['init']['gpu']['pkgs_url'] %>
 hops_data_dir = <%= node['hops']['data_dir'] %>
+default_registry_url= registry.service.consul:<%= node['hops']['docker']['registry']['port'] %>
+python_image_name= <%= node['hops']['docker']['base']['image']['python']['name'] %>
