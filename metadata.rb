@@ -48,3 +48,15 @@ attribute "cloud/init/awscli/url",
 attribute "cloud/init/docker/ecr-login/url",
           :description => "Download url for Amazon ECR Credential Helper",
           :type => 'string'
+
+attribute "cloud/collect_logs",
+          :description => "Flag to enable collecting logs on the Cloud. Default: true",
+          :type => 'string'
+
+attribute "cloud/cloudwatch/agent_version",
+          :description => "CloudWatch agent version",
+          :type => 'string'
+
+attribute "cloud/cloudwatch/download_url",
+          :description => "Download URL for CloudWatch agent",
+          :type => 'string'
