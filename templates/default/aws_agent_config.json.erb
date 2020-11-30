@@ -1,0 +1,23 @@
+{
+	"agent": {
+		"run_as_user": "root"
+	},
+	"logs": {
+		"logs_collected": {
+			"files": {
+				"collect_list": [
+					{
+						"file_path": "<%= node['cloud']['init']['install_dir'] %>/ec2init/ec2init.log",
+						"log_group_name": "ec2-init",
+						"log_stream_name": "{instance_id}"
+					},
+					{
+						"file_path": "<%= node['hopsworks']['domains_dir'] %>/<%= node['hopsworks']['domain_name'] %>/logs/server.log",
+						"log_group_name": "hopsworks",
+						"log_stream_name": "{instance_id}"
+					}				    
+				]
+			}
+		}
+	}
+}

@@ -57,11 +57,12 @@ if node['install']['cloud'].casecmp?("aws")
   bash "unzip and install AWS CLI V2" do
       user 'root'
       group 'root'
+      cwd node['cloud']['init']['install_dir']
       code <<-EOH
           set -e
           rm -rf #{node['cloud']['init']['install_dir']}/aws
           unzip #{node['cloud']['init']['install_dir']}/awscliv2.zip
-          ./aws/install
+          ./aws/install --update
           rm #{node['cloud']['init']['install_dir']}/awscliv2.zip
       EOH
   end
@@ -118,6 +119,15 @@ if node['install']['cloud'].casecmp?("aws")
     user 'root'
     group 'root'
     action :create
+  end
+  
+  if node['cloud']['collect_logs'].casecmp?("true") && node['cloud']['init']['config']['unmanaged'].casecmp?("false")
+    template "/opt/aws/amazon-cloudwatch-agent/bin/aws_agent_config.json" do
+      source "aws_agent_config.json.erb"
+      user 'root'
+      group 'root'
+      mode 0550
+    end
   end
 end  
 
