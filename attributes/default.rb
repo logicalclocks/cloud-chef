@@ -2,7 +2,7 @@ include_attribute 'tensorflow'
 include_attribute 'hops'
 
 default['cloud']['init']['install_dir']                    = '/root'
-default['cloud']['init']['version']                        = '0.7'
+default['cloud']['init']['version']                        = '0.8'
 
 default['cloud']['init']['config']['hosted_zone']          = "cloud.hopsworks.ai"
 default['cloud']['init']['config']['lets_encrypt_dir']     = "/etc/letsencrypt"
