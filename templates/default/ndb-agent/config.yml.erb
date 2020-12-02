@@ -1,0 +1,22 @@
+general:
+  log-level: <%= node['cloud']['ndb-agent']['log-level'] %>
+  handler-channel-size: 20
+  cluster-topology-location: <%= node['cloud']['ndb-agent']['config'] %>/cluster-topology.json
+
+http:
+  listen-port: 8181
+  api-key: API_KEY
+
+heartbeat:
+  enabled: HEARTBEAT_ENABLED
+  endpoint: HEARTBEAT_ENDPOINT
+
+templates:
+  source-dir: <%= node['cloud']['ndb-agent']['templates-dir'] %>
+  ndb-config-target: <%= node['ndb']['root_dir'] %>/config.ini
+
+plugins:
+  unmarshal:
+    Hopsworkspoststartunmarshal: <%= node['cloud']['ndb-agent']['bin'] %>/contrib/plugins/hopsworks_plugin.so
+  handlers:
+    Hopsworkspoststarthandler: <%= node['cloud']['ndb-agent']['bin'] %>/contrib/plugins/hopsworks_plugin.so
