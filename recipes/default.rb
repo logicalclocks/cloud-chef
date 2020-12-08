@@ -136,3 +136,7 @@ if node['cloud']['init']['config']['unmanaged'].casecmp?("true")
     action :enable
   end
 end
+
+if exists_local("ndb", "mysqld") and exists_local("hopsworks", "default")
+  include_recipe "cloud::prepare_upgrade"
+end 

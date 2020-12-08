@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<expat>
+
+    <expat>
+        <dir><%= @expat_dir %></dir>
+        <dry_run>false</dry_run>
+    </expat>
+
+    <database>
+        <url>jdbc:mysql://127.0.0.1/hopsworks</url>
+        <driver>com.mysql.cj.jdbc.Driver</driver>
+        <user><%= node['mysql']['user'] %></user>
+        <password><%= node['mysql']['password'] %></password>
+    </database>
+
+    <services>
+           <kibana-url>KIBANA_URL</kibana-url>
+           <elastic-url>ELASTIC_URL</elastic-url>
+    </services>
+
+    <kube>
+        <user></user>
+        <masterUrl></masterUrl>
+        <caPath></caPath>
+        <tstorePath></tstorePath>
+        <tstorePwd></tstorePwd>
+        <kstorePath></kstorePath>
+        <kstorePwd></kstorePwd>
+        <certFile></certFile>
+        <keyFile></keyFile>
+        <keyPwd></keyPwd>
+    </kube>
+
+    <hopsworks>
+      <url>HOPSWORKS_URL</url>
+      <serviceJwt>HOPSWORKS_SERVICE_JWT</serviceJwt>
+    </hopsworks>
+
+    <x509>
+        <masterPwdFile><%= node['certs']['dir'] %>/encryption_master_password</masterPwdFile>
+        <intermediateCA><%= node['certs']['dir'] %>/intermediate</intermediateCA>
+        <validityDays>3650</validityDays>
+        <caPassword>password</caPassword>
+    </x509>
+
+    <conda>
+        <dir><%= node['conda']['dir'] %></dir>
+        <user><%= node['conda']['user'] %></user>
+    </conda>
+
+    <ldap>
+        <url></url>
+        <authentication></authentication>
+        <principal></principal>
+        <credentials></credentials>
+        <base-dn></base-dn>
+    </ldap>
+
+    <elastic>
+        <user><%= node['elastic']['opendistro_security']['admin']['username'] %></user>
+        <pass><%= node['elastic']['opendistro_security']['admin']['password'] %></pass>
+    </elastic>
+
+    <hops>
+        <client>
+            <user><%= node['hops']['hdfs']['user'] %></user>
+        </client>
+    </hops>
+    
+    <version-06>
+        io.hops.hopsworks.expat.migrations.x509.GenerateProjectCertificates
+        io.hops.hopsworks.expat.migrations.x509.GenerateUserCertificates
+        io.hops.hopsworks.expat.migrations.jobs.JobsGpuMigration
+    </version-06>
+
+    <version-07>
+        io.hops.hopsworks.expat.migrations.jobs.UpdateJobConfiguration
+        io.hops.hopsworks.expat.migrations.conda.JupyterInConda
+    </version-07>
+
+    <version-010>
+        io.hops.hopsworks.expat.migrations.conda.CreateKagentLogsIndeces
+        io.hops.hopsworks.expat.migrations.jobs.RenameResources
+    </version-010>
+
+    <version-10>
+        io.hops.hopsworks.expat.migrations.elk.BeamKibana
+    </version-10>
+
+    <version-11>
+        io.hops.hopsworks.expat.migrations.elk.MultiTenantKibana
+        io.hops.hopsworks.expat.migrations.jobs.UpdateJobArgsConfiguration
+        io.hops.hopsworks.expat.migrations.projects.provenance.UpdateProvenance
+    </version-11>
+    <version-12>
+        io.hops.hopsworks.expat.migrations.metadata.UpdateMetadata
+    </version-12>
+    <version-13>
+        io.hops.hopsworks.expat.migrations.projects.search.featurestore.UpdateFeaturegroupsForSearch
+        io.hops.hopsworks.expat.migrations.projects.search.featurestore.UpdateTrainingdatasetsForSearch
+    </version-13>
+    <version-14>
+        io.hops.hopsworks.expat.migrations.conda.DockerConda
+        io.hops.hopsworks.expat.migrations.dataset.FixDatasetPermission
+    </version-14>
+     <version-20>
+        io.hops.hopsworks.expat.migrations.projects.appprovenance.ReindexV1
+    </version-20>
+</expat>
