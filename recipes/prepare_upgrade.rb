@@ -1,14 +1,3 @@
-bash "Generate versions file" do
-    user 'root'
-    group 'root'
-    cwd node['cloud']['init']['install_dir']
-    code <<-EOH
-        set -e
-        rm -rf #{node['cloud']['init']['install_dir']}/ec2init/versions.csv
-        #{node['ndb']['scripts_dir']}/mysql-client.sh -e  "SELECT id, value FROM #{node['hopsworks']['db']}.variables WHERE id LIKE '%version%'" -sN | sed 's/\t/,/g' > #{node['cloud']['init']['install_dir']}/ec2init/versions.csv
-    EOH
-end
-
 expat_filename = ::File.basename(node['hopsworks']['expat_url'])
 expat_file = "#{Chef::Config['file_cache_path']}/#{expat_filename}"
 
