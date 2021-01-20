@@ -1,3 +1,5 @@
+require 'securerandom'
+
 directory "#{node['cloud']['init']['install_dir']}/ec2init" do
   owner "root"
   group "root"
@@ -95,6 +97,9 @@ if node['cloud']['init']['config']['unmanaged'].casecmp?("true")
     user 'root'
     group 'root'
     mode 0500
+    variables({
+      :nonce => SecureRandom.hex[0...10]
+    })
   end
   
   template "#{systemd_directory}/unmanaged-ec2init.service" do
