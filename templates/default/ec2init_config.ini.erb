@@ -23,3 +23,4 @@ hops_versions = <%= node['hops']['versions']%>,<%= node['hops']['version'].sub("
 hopsworks_versions = <%= node['hopsworks']['versions']%>,<%=node['hopsworks']['version'].sub("-SNAPSHOT", "")%>
 expat_dir = <%= node['cloud']['init']['expat_dir'] %>
 hive_schematool = <%=node['hive2']['base_dir']%>/bin/schematool
+base_images = <%=node['cloud']['init']['install_dir']%>/<%=File.basename(node['hops']['docker']['base']['download_url'])%>

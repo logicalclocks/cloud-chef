@@ -55,3 +55,33 @@ template "#{expat_dir}/run_expat.sh" do
     })
     action :create
 end
+
+# move base image 
+image_url = node['hops']['docker']['base']['download_url']
+base_filename = File.basename(image_url)
+download_command = " wget #{image_url}"
+
+if node['install']['enterprise']['install'].casecmp? "true"
+  image_url ="#{node['install']['enterprise']['download_url']}/docker-tars/#{node['hops']['docker_img_version']}/#{base_filename}"
+  download_command = " wget --user #{node['install']['enterprise']['username']} --password #{node['install']['enterprise']['password']} #{image_url}"
+end
+
+bash "download_images" do
+  user "root"
+  group "root"
+  sensitive true
+  code <<-EOF
+       #{download_command} -O #{Chef::Config['file_cache_path']}/#{base_filename}
+  EOF
+  not_if { File.exist? "#{Chef::Config['file_cache_path']}/#{base_filename}" }
+end
+
+bash "copy_images" do
+  user "root"
+  group "root"
+  sensitive true
+  code <<-EOF
+    cp #{Chef::Config['file_cache_path']}/#{base_filename} #{node['cloud']['init']['install_dir']}/#{base_filename}
+  EOF
+  not_if { File.exist? "#{node['cloud']['init']['install_dir']}/#{base_filename}" }
+end
