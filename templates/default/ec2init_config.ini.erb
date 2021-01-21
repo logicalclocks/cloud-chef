@@ -17,3 +17,10 @@ nvidia_pkgs_url = <%= node['cloud']['init']['gpu']['pkgs_url'] %>
 hops_data_dir = <%= node['hops']['data_dir'] %>
 default_registry_url= registry.service.consul:<%= node['hops']['docker']['registry']['port'] %>
 python_image_name= <%= node['hops']['docker']['base']['image']['python']['name'] %>
+
+[upgradeplan]
+hops_versions = <%= node['hops']['versions']%>,<%= node['hops']['version'].sub("-SNAPSHOT", "").split("-")[0]%>
+hopsworks_versions = <%= node['hopsworks']['versions']%>,<%=node['hopsworks']['version'].sub("-SNAPSHOT", "")%>
+expat_dir = <%= node['cloud']['init']['expat_dir'] %>
+hive_schematool = <%=node['hive2']['base_dir']%>/bin/schematool
+base_images = <%=node['cloud']['init']['install_dir']%>/<%=File.basename(node['hops']['docker']['base']['download_url'])%>

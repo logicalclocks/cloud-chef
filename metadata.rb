@@ -16,6 +16,7 @@ depends 'hadoop_spark'
 
 recipe "install", "Copies and templates necessary files"
 recipe "default", "Creates Anaconda environment and setup systemd unit"
+recipe "prepare_upgrade", "Copies and template necessary files needed for upgrade"
 
 attribute "cloud/init/install_dir",
           :description => "Installation directory for ec2_init",

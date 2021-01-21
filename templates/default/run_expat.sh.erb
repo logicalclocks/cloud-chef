@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -e
+
+VERSION=$1
+
+export HADOOP_HOME=<%= node['hops']['base_dir'] %>
+export HADOOP_USER_NAME=<%= node['hops']['hdfs']['user'] %>
+export HOPSWORKS_EAR_HOME=<%= node['hopsworks']['domains_dir']%>/<%=node['hopsworks']['domain_name']%>/applications/hopsworks-ear~<%=node['install']['version']%>
+
+<%= @expat_dir%>/bin/expat -a migrate -v ${VERSION}
