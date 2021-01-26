@@ -49,6 +49,7 @@ bash "Setup binaries" do
         cp -r #{Chef::Config['file_cache_path']}/ndb-agent/contrib #{node['cloud']['ndb-agent']['bin']}
         chmod -R 750 #{node['cloud']['ndb-agent']['bin']}/contrib
     EOH
+    not_if { File.exist? "#{node['cloud']['ndb-agent']['bin']}/ndb-agent" }
 end
 
 template "#{node['cloud']['ndb-agent']['config']}/config.yml" do
