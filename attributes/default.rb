@@ -7,7 +7,7 @@ include_attribute "elastic"
 include_attribute "hive2"
 
 default['cloud']['init']['install_dir']                    = '/root'
-default['cloud']['init']['version']                        = '0.8'
+default['cloud']['init']['version']                        = '0.9'
 
 default['cloud']['init']['config']['hosted_zone']          = "cloud.hopsworks.ai"
 default['cloud']['init']['config']['lets_encrypt_dir']     = "/etc/letsencrypt"
