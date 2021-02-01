@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+ARGS='
+{
+   "gateway":"GATEWAY",
+   "config":"<%= node['cloud']['init']['install_dir'] %>/ec2init/ec2init_config.ini",
+   "password_file":"PASSWORD_FILE",
+   "user_id":"USER_ID",
+   "user_email":"USER_EMAIL",
+   "instance_id":"INSTANCE_ID",
+   "api_key":"{{.ApiKey}}",
+   "region":"REGION",
+   "cloud_provider":"aws",
+   "skip_report":"false",
+   "master_ip":"{{.HeadNode.Ip}}",
+   "user_management_type":"MANAGED"
+}'
+
+
+<%= node['cloud']['init']['install_dir'] %>/ec2init/run_ec2_init.sh ec2init.plans.ndb.join_cluster_plan.NdbNodeJoinCluster "$ARGS"

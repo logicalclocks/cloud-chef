@@ -61,3 +61,11 @@ attribute "cloud/cloudwatch/agent_version",
 attribute "cloud/cloudwatch/download_url",
           :description => "Download URL for CloudWatch agent",
           :type => 'string'
+
+attribute "cloud/ndb-agent/version",
+          :description => "Version of ndb-agent",
+          :type => 'string'
+
+attribute "cloud/ndb-agent/log-level",
+          :description => "Log level of ndb-agent",
+          :type => 'string'
