@@ -51,7 +51,7 @@ attribute "cloud/init/docker/ecr-login/url",
           :type => 'string'
 
 attribute "cloud/init/ndb/data_memory_multiplier",
-          :description => "Available memory to NDB DataMemory multiplier. Default: 0.07",
+          :description => "Available memory to NDB DataMemory multiplier. Default: 0.05",
           :type => 'string'
 
 attribute "cloud/collect_logs",
