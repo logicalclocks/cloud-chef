@@ -131,6 +131,27 @@ if node['install']['cloud'].casecmp?("aws")
   end
 end  
 
+
+if node['install']['cloud'].casecmp?("azure")
+  remote_file "/tmp/install-az.sh" do
+    source 'https://aka.ms/InstallAzureCLIDeb'
+    user 'root'
+    group 'root'
+    mode 0500
+    action :create
+  end
+
+  bash "unzip and install AZURE CLI" do
+      user 'root'
+      group 'root'
+      cwd node['cloud']['init']['install_dir']
+      code <<-EOH
+          set -e
+          /tmp/install-az.sh
+      EOH
+  end
+end
+
 if node['cloud']['init']['config']['unmanaged'].casecmp?("true")
   systemd_unit "unmanaged-ec2init.service" do
     action :enable
