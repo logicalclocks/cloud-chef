@@ -141,7 +141,7 @@ if node['install']['cloud'].casecmp?("azure")
     action :create
   end
 
-  bash "unzip and install AWS CLI V2" do
+  bash "unzip and install AZURE CLI" do
       user 'root'
       group 'root'
       cwd node['cloud']['init']['install_dir']
