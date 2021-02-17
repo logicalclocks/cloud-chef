@@ -14,6 +14,7 @@ heartbeat:
 templates:
   source-dir: <%= node['cloud']['ndb-agent']['templates-dir'] %>
   ndb-config-target: <%= node['ndb']['root_dir'] %>/config.ini
+  benchmarks-target-home: <%= node['ndb']['user-home']%>/benchmarks
 
 plugins:
   unmarshal:
