@@ -30,7 +30,7 @@ default['cloud']['cloudwatch']['agent_version']            = "1.247346.1b249759"
 default['cloud']['cloudwatch']['download_url']             = "https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/#{node['cloud']['cloudwatch']['agent_version']}/amazon-cloudwatch-agent.deb"
 
 default['cloud']['init']['expat_dir']                      = "#{node['cloud']['init']['install_dir']}/expat"
-default['cloud']['ndb-agent']['version']                   = "0.1"
+default['cloud']['ndb-agent']['version']                   = "0.2"
 default['cloud']['ndb-agent']['base_dir']                  = "#{node['cloud']['install_dir']}/ndb-agent/ndb-agent-#{node['cloud']['ndb-agent']['version']}"
 default['cloud']['ndb-agent']['home']                      = "#{node['cloud']['install_dir']}/ndb-agent/ndb-agent"
 default['cloud']['ndb-agent']['bin']                       = "#{node['cloud']['ndb-agent']['home']}/bin"
