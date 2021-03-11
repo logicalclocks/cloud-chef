@@ -22,6 +22,8 @@ default['cloud']['init']['docker']['ecr-login']['url']     = "#{node['download_u
 default['cloud']['init']['gpu']['driver_url']              = node['nvidia']['driver_url']
 default['cloud']['init']['gpu']['pkgs_url']                = node['hops']['nvidia_pkgs']['download_url']
 
+default['cloud']['init']['ndb']['data_memory_multiplier']  = "0.05"
+
 default['cloud']['collect_logs']                           = "true"
 default['cloud']['cloudwatch']['agent_version']            = "1.247346.1b249759"
 default['cloud']['cloudwatch']['download_url']             = "https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/#{node['cloud']['cloudwatch']['agent_version']}/amazon-cloudwatch-agent.deb"
