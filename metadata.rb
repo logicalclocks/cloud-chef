@@ -54,6 +54,10 @@ attribute "cloud/init/rondb/total_memory_config_multiplier",
           :description => "System available memory to RonDB TotalMemoryConfig multiplier. Default: 0.1",
           :type => 'string'
 
+attribute "cloud/init/rondb/num_cpus_multiplier",
+          :description => "System cores to RonDB NumCPUs multiplier. Default: 0.4",
+          :type => 'string'
+
 attribute "cloud/collect_logs",
           :description => "Flag to enable collecting logs on the Cloud. Default: true",
           :type => 'string'
