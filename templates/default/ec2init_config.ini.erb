@@ -17,7 +17,7 @@ nvidia_pkgs_url = <%= node['cloud']['init']['gpu']['pkgs_url'] %>
 hops_data_dir = <%= node['hops']['data_dir'] %>
 default_registry_url= registry.service.consul:<%= node['hops']['docker']['registry']['port'] %>
 python_image_name= <%= node['hops']['docker']['base']['image']['python']['name'] %>
-ndb_datamemory_multiplier = <%= node['cloud']['init']['ndb']['data_memory_multiplier'] %>
+rondb_total_memory_config_multiplier = <%= node['cloud']['init']['rondb']['total_memory_config_multiplier'] %>
 
 [upgradeplan]
 hops_versions = <%= node['hops']['versions']%>,<%= node['hops']['version'].sub("-SNAPSHOT", "").split("-")[0]%>
