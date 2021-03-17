@@ -23,7 +23,8 @@ default['cloud']['init']['docker']['ecr-login']['url']     = "#{node['download_u
 default['cloud']['init']['gpu']['driver_url']              = node['nvidia']['driver_url']
 default['cloud']['init']['gpu']['pkgs_url']                = node['hops']['nvidia_pkgs']['download_url']
 
-default['cloud']['init']['ndb']['data_memory_multiplier']  = "0.05"
+default['cloud']['init']['rondb']['total_memory_config_multiplier']  = "0.1"
+default['cloud']['init']['rondb']['num_cpus_multiplier']   = "0.4"
 
 default['cloud']['collect_logs']                           = "true"
 default['cloud']['cloudwatch']['agent_version']            = "1.247346.1b249759"

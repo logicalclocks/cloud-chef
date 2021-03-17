@@ -50,8 +50,12 @@ attribute "cloud/init/docker/ecr-login/url",
           :description => "Download url for Amazon ECR Credential Helper",
           :type => 'string'
 
-attribute "cloud/init/ndb/data_memory_multiplier",
-          :description => "Available memory to NDB DataMemory multiplier. Default: 0.05",
+attribute "cloud/init/rondb/total_memory_config_multiplier",
+          :description => "System available memory to RonDB TotalMemoryConfig multiplier. Default: 0.1",
+          :type => 'string'
+
+attribute "cloud/init/rondb/num_cpus_multiplier",
+          :description => "System cores to RonDB NumCPUs multiplier. Default: 0.4",
           :type => 'string'
 
 attribute "cloud/collect_logs",
