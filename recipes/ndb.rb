@@ -52,11 +52,18 @@ bash "Setup binaries" do
     not_if { File.exist? "#{node['cloud']['ndb-agent']['bin']}/ndb-agent" }
 end
 
+template_db_section = false
+if exists_local("ndb", "mysqld")
+    template_db_section = true
+end
 template "#{node['cloud']['ndb-agent']['config']}/config.yml" do
     source "ndb-agent/config.yml.erb"
     user 'root'
     group 'root'
     mode 0500
+    variables({
+        :template_db_section => template_db_section
+    })
 end
 
 remote_directory "#{node['cloud']['ndb-agent']['templates-dir']}" do
