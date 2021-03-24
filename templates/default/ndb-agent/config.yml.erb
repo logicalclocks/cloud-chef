@@ -16,6 +16,12 @@ templates:
   ndb-config-target: <%= node['ndb']['root_dir'] %>/config.ini
   benchmarks-target-home: <%= node['ndb']['user-home']%>/benchmarks
 
+<% if @template_db_section -%>
+database:
+  address: 127.0.0.1
+  username: root
+<% end -%>
+
 plugins:
   unmarshal:
     Hopsworkspoststartunmarshal: <%= node['cloud']['ndb-agent']['bin'] %>/contrib/plugins/hopsworks_plugin.so
