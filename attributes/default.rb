@@ -5,6 +5,7 @@ include_attribute 'hopsworks'
 include_attribute "conda"
 include_attribute "elastic"
 include_attribute "hive2"
+include_attribute "onlinefs"
 
 default["cloud"]["install_dir"]                            = node["install"]["dir"].empty? ? "/srv/hops" : node["install"]["dir"]
 default['cloud']['init']['install_dir']                    = '/root'
