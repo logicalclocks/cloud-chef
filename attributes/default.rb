@@ -9,7 +9,7 @@ include_attribute "onlinefs"
 
 default["cloud"]["install_dir"]                            = node["install"]["dir"].empty? ? "/srv/hops" : node["install"]["dir"]
 default['cloud']['init']['install_dir']                    = '/root'
-default['cloud']['init']['version']                        = '0.9'
+default['cloud']['init']['version']                        = '0.10'
 
 default['cloud']['init']['config']['hosted_zone']          = "cloud.hopsworks.ai"
 default['cloud']['init']['config']['lets_encrypt_dir']     = "/etc/letsencrypt"
