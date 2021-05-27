@@ -21,6 +21,7 @@ rondb_total_memory_config_multiplier = <%= node['cloud']['init']['rondb']['total
 rondb_num_cpus_multiplier = <%= node['cloud']['init']['rondb']['num_cpus_multiplier'] %>
 onlinefs_username = <%= node['onlinefs']['hopsworks']['email'] %>
 onlinefs_token_file = <%= node['onlinefs']['token'] %>
+data_mount_point = <%= node['cloud']['data_volume']['mount-point'] %>
 
 [upgradeplan]
 hops_versions = <%= node['hops']['versions']%>,<%= node['hops']['version'].sub("-SNAPSHOT", "").split("-")[0]%>
