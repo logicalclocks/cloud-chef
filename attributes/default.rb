@@ -28,8 +28,9 @@ default['cloud']['init']['rondb']['total_memory_config_multiplier']  = "0.1"
 default['cloud']['init']['rondb']['num_cpus_multiplier']   = "0.4"
 
 default['cloud']['collect_logs']                           = "true"
-default['cloud']['cloudwatch']['agent_version']            = "1.247346.1b249759"
-default['cloud']['cloudwatch']['download_url']             = "https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/#{node['cloud']['cloudwatch']['agent_version']}/amazon-cloudwatch-agent.deb"
+default['cloud']['cloudwatch']['agent_version']            = "1.247347.6b250880"
+default['cloud']['cloudwatch']['download_url']['ubuntu']   = "https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/#{node['cloud']['cloudwatch']['agent_version']}/amazon-cloudwatch-agent.deb"
+default['cloud']['cloudwatch']['download_url']['centos']   = "https://s3.amazonaws.com/amazoncloudwatch-agent/centos/amd64/#{node['cloud']['cloudwatch']['agent_version']}/amazon-cloudwatch-agent.rpm"
 
 default['cloud']['init']['expat_dir']                      = "#{node['cloud']['init']['install_dir']}/expat"
 default['cloud']['ndb-agent']['version']                   = "0.3"
