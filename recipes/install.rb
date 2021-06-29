@@ -60,25 +60,27 @@ when "debian"
     EOF
   end
   systemd_directory = "/lib/systemd/system"
-
-  filename = File.basename(node['cloud']['cloudwatch']['download_url'])
-  remote_file "#{Chef::Config['file_cache_path']}/#{filename}" do
-    source node['cloud']['cloudwatch']['download_url']
-    user 'root'
-    group 'root'
-    mode 0500
-    action :create
-    only_if { node['cloud']['collect_logs'].casecmp?("true") && node['install']['cloud'].casecmp?("aws")}
-    notifies :install, 'dpkg_package[amazon-cloudwatch-agent]'
-  end
-  
-  dpkg_package "amazon-cloudwatch-agent" do
-    source "#{Chef::Config['file_cache_path']}/#{filename}"
-    action :nothing
-  end
+  os_flavour = "ubuntu"
 when "rhel"
   package "epel-release"
   systemd_directory = "/usr/lib/systemd/system"
+  os_flavour = "centos"
+end
+
+filename = File.basename(node['cloud']['cloudwatch']['download_url'][os_flavour])
+remote_file "#{Chef::Config['file_cache_path']}/#{filename}" do
+  source node['cloud']['cloudwatch']['download_url'][os_flavour]
+  user 'root'
+  group 'root'
+  mode 0500
+  action :create
+  only_if { node['cloud']['collect_logs'].casecmp?("true") && node['install']['cloud'].casecmp?("aws")}
+  notifies :install, 'package[amazon-cloudwatch-agent]'
+end
+
+package "amazon-cloudwatch-agent" do
+  source "#{Chef::Config['file_cache_path']}/#{filename}"
+  action :nothing
 end
 
 package "certbot"
