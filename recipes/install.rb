@@ -68,19 +68,31 @@ when "rhel"
 end
 
 filename = File.basename(node['cloud']['cloudwatch']['download_url'][os_flavour])
-remote_file "#{Chef::Config['file_cache_path']}/#{filename}" do
+cached_file = "#{Chef::Config['file_cache_path']}/#{filename}"
+remote_file cached_file do
   source node['cloud']['cloudwatch']['download_url'][os_flavour]
   user 'root'
   group 'root'
   mode 0500
   action :create
   only_if { node['cloud']['collect_logs'].casecmp?("true") && node['install']['cloud'].casecmp?("aws")}
-  notifies :install, 'package[amazon-cloudwatch-agent]'
 end
 
-package "amazon-cloudwatch-agent" do
-  source "#{Chef::Config['file_cache_path']}/#{filename}"
-  action :nothing
+# We can't just use package because in Ubuntu package provider cannot
+# install a deb package from source, we must use dpkg_package provider
+case node['platform_family']
+when 'debian'
+  dpkg_package "amazon-cloudwatch-agent" do
+    source cached_file
+    action :install
+    only_if { ::File.exist?(cached_file) }
+  end
+when 'rhel'
+  package "amazon-cloudwatch-agent" do
+    source cached_file
+    action :install
+    only_if { ::File.exist?(cached_file) }
+  end
 end
 
 package "certbot"
