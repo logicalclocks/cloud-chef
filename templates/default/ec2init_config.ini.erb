@@ -30,3 +30,4 @@ hive_schematool = <%=node['hive2']['base_dir']%>/bin/schematool
 base_images = <%=node['cloud']['init']['install_dir']%>/<%=File.basename(node['hops']['docker']['base']['download_url'])%>
 tours_cache_base_dir = <%=node["hops"]["cloud_tours_cache"]['base_dir']%>
 tours_cache_info_csv = <%=node["hops"]["cloud_tours_cache"]['info_csv']%>
+onlinefs_image = <%=node['cloud']['init']['install_dir']%>/<%=File.basename(node['onlinefs']['download_url'])%>
