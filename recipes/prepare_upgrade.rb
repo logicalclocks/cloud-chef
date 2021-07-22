@@ -85,3 +85,22 @@ bash "copy_images" do
   EOF
   not_if { File.exist? "#{node['cloud']['init']['install_dir']}/#{base_filename}" }
 end
+
+# move onlinefs image
+image_url = node['onlinefs']['download_url']
+base_filename = File.basename(image_url)
+remote_file "#{Chef::Config['file_cache_path']}/#{base_filename}" do
+  source image_url
+  action :create
+  not_if { File.exist? "#{Chef::Config['file_cache_path']}/#{base_filename}" }
+end
+
+bash "copy_images" do
+  user "root"
+  group "root"
+  sensitive true
+  code <<-EOF
+    cp #{Chef::Config['file_cache_path']}/#{base_filename} #{node['cloud']['init']['install_dir']}/#{base_filename}
+  EOF
+  not_if { File.exist? "#{node['cloud']['init']['install_dir']}/#{base_filename}" }
+end
