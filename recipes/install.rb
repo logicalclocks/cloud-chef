@@ -14,11 +14,17 @@ directory node['data']['dir'] do
   not_if { ::File.directory?(node['data']['dir']) }
 end
 
+directory node['cloud']['data_volume']['root_dir'] do
+  owner 'root'
+  group 'root'
+  mode '0770'
+  action :create
+end
+
 directory node['cloud']['data_volume']['ec2init_checks'] do
   owner 'root'
   group 'root'
   mode '0770'
-  recursive true
   action :create
 end
 
