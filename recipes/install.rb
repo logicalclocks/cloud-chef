@@ -6,6 +6,51 @@ directory "#{node['cloud']['init']['install_dir']}/ec2init" do
   mode "700"
 end
 
+directory node['data']['dir'] do
+  owner 'root'
+  group 'root'
+  mode '0775'
+  action :create
+  not_if { ::File.directory?(node['data']['dir']) }
+end
+
+directory node['cloud']['data_volume']['root_dir'] do
+  owner 'root'
+  group 'root'
+  mode '0770'
+  action :create
+end
+
+directory node['cloud']['data_volume']['ec2init_checks'] do
+  owner 'root'
+  group 'root'
+  mode '0770'
+  action :create
+end
+
+link "#{node['cloud']['init']['install_dir']}/ec2init/ec2init_checks" do
+  owner 'root'
+  group 'root'
+  mode '0770'
+  to node['cloud']['data_volume']['ec2init_checks']
+end
+
+file "#{node['cloud']['data_volume']['root_dir']}/ec2init.log" do
+  content ''
+  owner 'root'
+  group 'root'
+  mode "750"
+  action :create
+  not_if { File.exist?("#{node['cloud']['data_volume']['root_dir']}/ec2init.log") }
+end
+
+link "#{node['cloud']['init']['install_dir']}/ec2init/ec2init.log" do
+  owner 'root'
+  group 'root'
+  mode '0750'
+  to "#{node['cloud']['data_volume']['root_dir']}/ec2init.log"
+end
+
 template "#{node['cloud']['init']['install_dir']}/ec2init/run_ec2_init.sh" do
     source "run_ec2_init.sh.erb"
     user "root"
