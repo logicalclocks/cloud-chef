@@ -14,7 +14,8 @@ ARGS='
    "cloud_provider":"<%= node['install']['cloud'].downcase() %>",
    "skip_report":"false",
    "master_ip":"{{.HeadNode.Ip}}",
-   "user_management_type":"MANAGED"
+   "user_management_type":"MANAGED"{{ if .SearchDomain }},
+   "azure_search_domain":"{{.SearchDomain}}"{{ end }}
 }'
 
 
