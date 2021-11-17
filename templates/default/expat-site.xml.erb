@@ -63,13 +63,14 @@
         <services-logs-pass><%= node['elastic']['opendistro_security']['service_log_viewer']['password'] %></services-logs-pass>
         <snapshot>
             <repo>
-                <name></name>
-                <location></location>
+                <name>expat</name>
+                <location>['elastic']['backup_dir']/expat</location>
             </repo>
-            <name></name>
+            <name>expat_backup</name>
             <!-- repeated section for multiple indices -->
             <indices></indices>
-            <ignoreUnavailable></ignoreUnavailable>
+            <!-- should elastic silently ignore missing indices. when false, a missing index will throw an exception -->
+            <ignoreUnavailable>false</ignoreUnavailable>
         </snapshot>
     </elastic>
 
@@ -80,7 +81,7 @@
     </hops>
 
     <epipe>
-        <path></path>
+        <path><%= node['epipe']['base_dir'] %></path>
     </epipe>
     
     <version-06>
