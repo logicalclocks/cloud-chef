@@ -6,6 +6,7 @@ include_attribute "conda"
 include_attribute "elastic"
 include_attribute "hive2"
 include_attribute "onlinefs"
+include_attribute "epipe"
 
 default["cloud"]["install_dir"]                            = node["install"]["dir"].empty? ? "/srv/hops" : node["install"]["dir"]
 # Data volume directories
