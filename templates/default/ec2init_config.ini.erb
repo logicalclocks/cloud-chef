@@ -32,4 +32,3 @@ base_images = <%=node['cloud']['init']['install_dir']%>/<%=File.basename(node['h
 tours_cache_base_dir = <%=node["hops"]["cloud_tours_cache"]['base_dir']%>
 tours_cache_info_csv = <%=node["hops"]["cloud_tours_cache"]['info_csv']%>
 onlinefs_image = <%=node['cloud']['init']['install_dir']%>/<%=File.basename(node['onlinefs']['download_url'])%>
-elastic_reindex_base_indices_script = <%= node['elastic']['epipe']['reindex-base-indices_script'] %>
