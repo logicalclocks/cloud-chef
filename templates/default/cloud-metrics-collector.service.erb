@@ -1,0 +1,20 @@
+[Unit]
+Description = cloud_metrics_daemon  
+After = syslog.target network.target remote-fs.target
+StartLimitIntervalSec=60
+StartLimitBurst=20
+
+[Service]
+User = <%= node['hopsmonitor']['user'] %> 
+Group = <%= node['hopsmonitor']['group'] %>
+
+ExecStart = <%= node['cloud']['metrics']['dir'] %>/cloud-metrics-collector \
+            --config <%= node['cloud']['metrics']['dir'] %>/config.yml
+LimitNOFILE = 20000
+Restart=on-failure
+RestartSec=2
+
+Type = simple
+
+[Install]
+WantedBy = multi-user.target

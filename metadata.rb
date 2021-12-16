@@ -81,3 +81,7 @@ attribute "cloud/ndb-agent/version",
 attribute "cloud/ndb-agent/log-level",
           :description => "Log level of ndb-agent",
           :type => 'string'
+
+attribute "cloud/metrics/version",
+          :description => "version of the cloud-metrics-collector to install",
+          :type => 'string'
