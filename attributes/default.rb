@@ -7,6 +7,7 @@ include_attribute "elastic"
 include_attribute "hive2"
 include_attribute "onlinefs"
 include_attribute "epipe"
+include_attribute "hopsmonitor"
 
 default["cloud"]["install_dir"]                            = node["install"]["dir"].empty? ? "/srv/hops" : node["install"]["dir"]
 # Data volume directories
@@ -46,3 +47,6 @@ default['cloud']['ndb-agent']['bin']                       = "#{node['cloud']['n
 default['cloud']['ndb-agent']['config']                    = "#{node['cloud']['ndb-agent']['home']}/config"
 default['cloud']['ndb-agent']['log-level']                 = "debug"
 default['cloud']['ndb-agent']['templates-dir']             = "#{node['cloud']['ndb-agent']['home']}/templates"
+
+default['cloud']['metrics']['dir']                         = "#{node["cloud"]["install_dir"]}/cloud-metrics-collector"
+default['cloud']['metrics']['version']                     = "0.1.0"
