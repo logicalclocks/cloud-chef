@@ -26,7 +26,7 @@ bash "Setup daemon" do
         set -e
         cp #{Chef::Config['file_cache_path']}/#{cached_file} #{node['cloud']['metrics']['dir']}/cloud-metrics-collector
         chmod 750 #{node['cloud']['metrics']['dir']}/cloud-metrics-collector
-        chown #{node['hopsmonitor']['user']}:#{node['hopsmonitor']['group']}
+        chown #{node['hopsmonitor']['user']}:#{node['hopsmonitor']['group']} #{node['cloud']['metrics']['dir']}/cloud-metrics-collector
     EOH
     not_if { File.exist? "#{node['cloud']['metrics']['dir']}/cloud-metrics-collector" }
 end
