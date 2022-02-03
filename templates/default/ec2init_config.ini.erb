@@ -33,3 +33,4 @@ tours_cache_base_dir = <%=node["hops"]["cloud_tours_cache"]['base_dir']%>
 tours_cache_info_csv = <%=node["hops"]["cloud_tours_cache"]['info_csv']%>
 onlinefs_image = <%=node['cloud']['init']['install_dir']%>/<%=File.basename(node['onlinefs']['download_url'])%>
 airflow_image = <%=node['cloud']['init']['install_dir']%>/<%=File.basename(node['airflow']['url'])%>
+git_image = <%=node['cloud']['init']['install_dir']%>/<%=File.basename(node['hops']['docker']['git']['download_url'])%>
