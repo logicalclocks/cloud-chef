@@ -25,6 +25,6 @@ database:
 
 plugins:
   unmarshal:
-    Hopsworkspoststartunmarshal: <%= node['cloud']['ndb-agent']['bin'] %>/contrib/plugins/hopsworks_plugin.so
+    Clusterpoststartunmarshal: <%= node['cloud']['ndb-agent']['bin'] %>/contrib/plugins/hopsworks_plugin.so
   handlers:
-    Hopsworkspoststarthandler: <%= node['cloud']['ndb-agent']['bin'] %>/contrib/plugins/hopsworks_plugin.so
+    Clusterpoststarthandler: <%= node['cloud']['ndb-agent']['bin'] %>/contrib/plugins/hopsworks_plugin.so
