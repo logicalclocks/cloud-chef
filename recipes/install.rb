@@ -169,13 +169,9 @@ if node['cloud']['init']['config']['unmanaged'].casecmp?("true")
   end
 end
 
-hopsworks_cn = consul_helper.get_service_fqdn("hopsworks.glassfish")
-template "#{node['cloud']['init']['install_dir']}/ec2init/generate_glassfish_internal_x509.sh" do
-    source "generate_glassfish_internal_x509.sh.erb"
+template "#{node['cloud']['init']['install_dir']}/ec2init/import_glassfish_internal_x509.sh" do
+    source "import_glassfish_internal_x509.sh.erb"
     user 'root'
     group 'root'
     mode 0500
-    variables({
-        :hopsworks_cn => hopsworks_cn
-    })
 end
