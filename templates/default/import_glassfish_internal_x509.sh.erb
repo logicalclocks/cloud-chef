@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e
+
+GLASSFISH_CONFIG_DIR=<%= node['hopsworks']['config_dir'] %>
+MASTER_PASSWORD=<%= node['hopsworks']['master']['password'] %>
+
+pushd $GLASSFISH_CONFIG_DIR
+
+openssl pkcs12 -export -in certificate_bundle.pem -inkey internal.key -out cert_and_key.p12 -name internal -CAfile root_ca.pem -caname internal -password pass:$MASTER_PASSWORD
+# Import into the keystore
+yes | keytool -delete -alias internal -keystore keystore.jks -storepass $MASTER_PASSWORD
+yes | keytool -importkeystore -destkeystore keystore.jks -srckeystore cert_and_key.p12 -srcstoretype PKCS12 -alias internal -srcstorepass $MASTER_PASSWORD -deststorepass $MASTER_PASSWORD -destkeypass $MASTER_PASSWORD
+
+keytool -delete -alias internal -keystore cacerts.jks -storepass $MASTER_PASSWORD
+yes | keytool -import -alias internal -file root_ca.pem -keystore cacerts.jks -storepass $MASTER_PASSWORD
