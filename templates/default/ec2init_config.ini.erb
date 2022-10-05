@@ -22,6 +22,7 @@ rondb_num_cpus_multiplier = <%= node['cloud']['init']['rondb']['num_cpus_multipl
 onlinefs_username = <%= node['onlinefs']['hopsworks']['email'] %>
 onlinefs_token_file = <%= node['onlinefs']['token'] %>
 data_mount_point = <%= node['cloud']['data_volume']['mount-point'] %>
+docker_cgroup_quota_percentage = <%= node['hops']['docker']['cgroup']['cpu']['quota']['percentage'] %>
 
 [upgradeplan]
 hops_versions = <%= node['hops']['versions']%>,<%= node['hops']['version'].sub("-SNAPSHOT", "").split("-")[0]%>
