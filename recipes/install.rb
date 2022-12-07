@@ -107,7 +107,10 @@ when "debian"
   systemd_directory = "/lib/systemd/system"
   os_flavour = "ubuntu"
 when "rhel"
-  package "epel-release"
+  package "epel-release" do
+    retries 10
+    retry_delay 30
+  end
   systemd_directory = "/usr/lib/systemd/system"
   os_flavour = "centos"
 end
@@ -128,20 +131,26 @@ end
 case node['platform_family']
 when 'debian'
   dpkg_package "amazon-cloudwatch-agent" do
+    retries 10
+    retry_delay 30
     source cached_file
     action :install
     only_if { ::File.exist?(cached_file) }
   end
 when 'rhel'
   package "amazon-cloudwatch-agent" do
+    retries 10
+    retry_delay 30
     source cached_file
     action :install
     only_if { ::File.exist?(cached_file) }
   end
 end
 
-package "certbot"
-package "curl"
+package ["certbot", "curl", "unzip"] do
+  retries 10
+  retry_delay 30
+end
 
 template "#{systemd_directory}/ec2update.service" do
   source "ec2update.service.erb"
