@@ -51,8 +51,6 @@ if node['install']['cloud'].casecmp?("aws")
     mode 0500
     action :create
   end
-
-  package "unzip"
   
   bash "unzip and install AWS CLI V2" do
       user 'root'
