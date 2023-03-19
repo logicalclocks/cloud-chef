@@ -100,7 +100,6 @@ when "debian"
       apt-get update
       apt-get install -y software-properties-common
       add-apt-repository -y universe
-      add-apt-repository -y ppa:certbot/certbot
       apt-get update
     EOF
   end
@@ -147,9 +146,20 @@ when 'rhel'
   end
 end
 
-package ["certbot", "curl", "unzip"] do
+package ["curl", "unzip"] do
   retries 10
   retry_delay 30
+end
+
+bash 'install-certbot' do
+  user 'root'
+  group 'root'
+  code <<-EOH
+    set -e
+    snap install core; sudo snap refresh core
+    snap install --classic certbot
+    ln -s /snap/bin/certbot /usr/bin/certbot
+  EOH
 end
 
 template "#{systemd_directory}/ec2update.service" do
