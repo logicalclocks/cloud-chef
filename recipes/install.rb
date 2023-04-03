@@ -144,6 +144,21 @@ when 'rhel'
     action :install
     only_if { ::File.exist?(cached_file) }
   end
+
+  package "snapd" do
+    retries 10
+    retry_delay 30
+  end
+  bash 'configure-snapd' do
+    user 'root'
+    group 'root'
+    code <<-EOH
+      set -e
+      systemctl enable --now snapd.socket
+      # enable classic snap support
+      ln -s /var/lib/snapd/snap /snap
+    EOH
+  end
 end
 
 package ["curl", "unzip"] do
@@ -156,8 +171,11 @@ bash 'install-certbot' do
   group 'root'
   code <<-EOH
     set -e
-    snap install core; sudo snap refresh core
-    snap install --classic certbot
+    # Although we execute as root, for Centos it is safer
+    # to run sudo because we have just installed snap above
+    # and we need to login to initialize it
+    sudo snap install core; sudo snap refresh core
+    sudo snap install --classic certbot
     ln -s /snap/bin/certbot /usr/bin/certbot
   EOH
 end
