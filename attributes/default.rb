@@ -27,6 +27,8 @@ default['cloud']['init']['awscli']['url']                  = "#{node['download_u
 default['cloud']['init']['docker']['config_dir']           = "/root/.docker"
 default['cloud']['init']['docker']['ecr-login']['version'] = "0.6.0"
 default['cloud']['init']['docker']['ecr-login']['url']     = "#{node['download_url']}/cloud/ecr-login/#{node['cloud']['init']['docker']['ecr-login']['version']}/docker-credential-ecr-login"
+default['cloud']['init']['docker']['memory']['soft-limit-multiplier'] = "0.16"
+default['cloud']['init']['docker']['memory']['hard-limit-multiplier'] = "0.2"
 
 default['cloud']['init']['gpu']['driver_url']              = node['nvidia']['driver_url']
 default['cloud']['init']['gpu']['pkgs_url']                = node['hops']['nvidia_pkgs']['download_url']

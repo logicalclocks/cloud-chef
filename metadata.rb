@@ -54,6 +54,14 @@ attribute "cloud/init/docker/ecr-login/url",
           :description => "Download url for Amazon ECR Credential Helper",
           :type => 'string'
 
+attribute "cloud/init/docker/memory/soft-limit-multiplier",
+          :description => "Percentage of the total number of VM available memory to set as Docker cgroup memory soft limit. Default: 0.16",
+          :type => 'string'
+
+attribute "cloud/init/docker/memory/hard-limit-multiplier",
+          :description => "Percentage of the total number of VM available memory to set as Docker cgroup memory hard limit. Default: 0.2",
+          :type => 'string'
+
 attribute "cloud/init/rondb/total_memory_config_multiplier",
           :description => "System available memory to RonDB TotalMemoryConfig multiplier. Default: 0.1",
           :type => 'string'
