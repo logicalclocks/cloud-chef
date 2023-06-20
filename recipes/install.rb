@@ -161,7 +161,7 @@ when 'rhel'
   end
 end
 
-package ["curl", "unzip"] do
+package ["curl", "unzip", "netcat"] do
   retries 10
   retry_delay 30
 end
@@ -185,6 +185,14 @@ template "#{systemd_directory}/ec2update.service" do
   owner "root"
   group "root"
   mode 0664
+end
+
+remote_file "#{systemd_directory}/lb-pong.service" do
+  source "lb-pong.service"
+  user 'root'
+  group 'root'
+  mode 0664
+  action :create
 end
 
 if node['cloud']['init']['config']['unmanaged'].casecmp?("true")
