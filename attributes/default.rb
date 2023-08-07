@@ -23,7 +23,8 @@ default['cloud']['init']['config']['lets_encrypt_dir']     = "/etc/letsencrypt"
 default['cloud']['init']['config']['dev']                  = "false"
 default['cloud']['init']['config']['unmanaged']            = "false"
 
-default['cloud']['init']['awscli']['url']                  = "#{node['download_url']}/cloud/awscli-exe-linux-x86_64.zip"
+# https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+default['cloud']['init']['awscli']['url']                  = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
 default['cloud']['init']['docker']['config_dir']           = "/root/.docker"
 default['cloud']['init']['docker']['ecr-login']['version'] = "0.6.0"
 default['cloud']['init']['docker']['ecr-login']['url']     = "#{node['download_url']}/cloud/ecr-login/#{node['cloud']['init']['docker']['ecr-login']['version']}/docker-credential-ecr-login"
