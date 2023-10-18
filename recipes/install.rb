@@ -161,9 +161,42 @@ when 'rhel'
   end
 end
 
-package ["curl", "unzip", "netcat"] do
+package ["curl", "unzip", "nginx"] do
   retries 10
   retry_delay 30
+end
+
+systemd_unit "nginx.service" do
+  action [:disable, :stop]
+end
+
+case node['platform_family']
+when 'debian'
+  remote_file "/etc/nginx/sites-available/lb-pong" do
+    source "ubuntu-nginx-lb-pong"
+    user 'root'
+    group 'root'
+    mode 0660
+    action :create
+  end
+
+  bash 'configure-lb-pong' do
+    user 'root'
+    group 'root'
+    code <<-EOH
+      set -e
+      rm /etc/nginx/sites-enabled/default
+      ln -s /etc/nginx/sites-available/lb-pong /etc/nginx/sites-enabled/lb-pong
+    EOH
+  end
+when 'rhel'
+  remote_file "/etc/nginx/nginx.conf" do
+    source "centos-nginx-lb-pong"
+    user 'root'
+    group 'root'
+    mode 0660
+    action :create
+  end
 end
 
 bash 'install-certbot' do
