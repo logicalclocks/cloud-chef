@@ -12,6 +12,8 @@ http:
 heartbeat:
   enabled: HEARTBEAT_ENABLED
   endpoint: HEARTBEAT_ENDPOINT
+  is-leader: HEARTBEAT_ENABLED
+  cloud-base-endpoint: HEARTBEAT_ENDPOINT
 
 templates:
   source-dir: <%= node['cloud']['ndb-agent']['templates-dir'] %>
