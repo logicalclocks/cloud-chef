@@ -4,6 +4,9 @@ general:
   cluster-topology-location: <%= node['cloud']['ndb-agent']['config'] %>/cluster-topology.json
   backup-staging-directory: <%= node['ndb']['BackupDataDir'] %>
   extra-mysqld-vms: 1
+  public-state-filepath: /srv/hops/ndb-agent/ndb-agent/config/public-state.json
+  fallback-service-discovery: true
+  agent-running-since-filepath: /srv/hops/ndb-agent/ndb-agent/config/agent-running-since.txt
 
 http:
   listen-port: 8181
