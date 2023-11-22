@@ -6,7 +6,7 @@ general:
   extra-mysqld-vms: 1
   public-state-filepath: <%= node['cloud']['ndb-agent']['config'] %>/public-state.json
   fallback-service-discovery: true
-  agent-running-since-filepath: /srv/hops/ndb-agent/ndb-agent/config/agent-running-since.txt
+  agent-running-since-filepath: <%= node['cloud']['ndb-agent']['config'] %>/agent-running-since.txt
 
 http:
   listen-port: 8181
