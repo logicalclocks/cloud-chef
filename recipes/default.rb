@@ -97,14 +97,14 @@ if node['install']['cloud'].casecmp?("aws")
   
   end
 
-  directory node["install"]["aws"]["docker"]["ecr-login_dir"]  do
+  directory node["install"]["cloud_docker_helper_dir"]  do
     owner "root"
     group "root"
     mode 0500
     action :create
   end
   
-  remote_file "#{node["install"]["aws"]["docker"]["ecr-login_dir"]}/docker-credential-ecr-login" do
+  remote_file "#{node["install"]["cloud_docker_helper_dir"]}/docker-credential-ecr-login" do
     source node['cloud']['init']['docker']['ecr-login']['url']
     user 'root'
     group 'root'
@@ -113,7 +113,7 @@ if node['install']['cloud'].casecmp?("aws")
   end
 
   link "/usr/local/bin/docker-credential-ecr-login" do
-    to "#{node["install"]["aws"]["docker"]["ecr-login_dir"]}/docker-credential-ecr-login"
+    to "#{node["install"]["cloud_docker_helper_dir"]}/docker-credential-ecr-login"
     user 'root'
     group 'root'
     action :create
@@ -148,6 +148,73 @@ if node['install']['cloud'].casecmp?("azure")
       EOH
   end
 end
+
+if node['install']['cloud'].casecmp?("gcp")
+  
+  remote_file "/usr/local/google-cloud-cli.tar.gz" do
+    source node['cloud']['init']['gcloudcli']['url']
+    user 'root'
+    group 'root'
+    mode 0500
+    action :create
+  end
+
+  bash "unzip and install Google Cloud CLI" do
+      user 'root'
+      group 'root'
+      cwd "/usr/local"
+      code <<-EOH
+          set -e
+          tar -xf /usr/local/google-cloud-cli.tar.gz
+          ./google-cloud-sdk/install.sh --additional-components gke-gcloud-auth-plugin --quiet
+          rm /usr/local/google-cloud-cli.tar.gz
+          ln -s /usr/local/google-cloud-sdk/bin/gcloud /usr/local/bin/gcloud
+          ln -s /usr/local/google-cloud-sdk/bin/gke-gcloud-auth-plugin /usr/local/bin/gke-gcloud-auth-plugin
+      EOH
+      not_if "test -d /usr/local/google-cloud-sdk", :user => 'root'
+  end
+
+  directory node["install"]["cloud_docker_helper_dir"]  do
+    owner "root"
+    group "root"
+    mode 0500
+    action :create
+  end
+  
+  remote_file "#{node["install"]["cloud_docker_helper_dir"]}/docker-credential-gcr" do
+    source node['cloud']['init']['docker']['gcr-login']['url']
+    user 'root'
+    group 'root'
+    mode 0500
+    action :create
+  end
+
+  link "/usr/local/bin/docker-credential-gcr" do
+    to "#{node["install"]["cloud_docker_helper_dir"]}/docker-credential-gcr"
+    user 'root'
+    group 'root'
+    action :create
+  end
+
+end
+
+if node['install']['managed_kubernetes'].casecmp?("true") 
+  remote_file "/usr/local/bin/kubectl" do
+    source node['cloud']['init']['kubectl']['url']
+    user 'root'
+    group 'root'
+    mode 0755
+    action :create
+  end
+
+  cookbook_file "#{node['cloud']['init']['install_dir']}/ec2init/smarter-device-manager-plugin.yml" do
+    source "smarter-device-manager-plugin.yml"
+    user 'root'
+    group 'root'
+    mode 0500
+  end
+
+end  
 
 if node['cloud']['init']['config']['unmanaged'].casecmp?("true")
   systemd_unit "unmanaged-ec2init.service" do
