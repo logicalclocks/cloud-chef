@@ -212,10 +212,3 @@ template "#{node['cloud']['init']['install_dir']}/ec2init/import_glassfish_inter
     group 'root'
     mode 0500
 end
-
-if node['platform_family'].eql?("debian")
-  package  ["libnuma1"] do
-    retries 10
-    retry_delay 30
-  end
-end
