@@ -53,3 +53,8 @@ default['cloud']['ndb-agent']['templates-dir']             = "#{node['cloud']['n
 
 default['cloud']['metrics']['dir']                         = "#{node["cloud"]["install_dir"]}/cloud-metrics-collector"
 default['cloud']['metrics']['version']                     = "0.1.0"
+
+default['cloud']['init']['kubectl']['url']                  = "https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl"
+default['cloud']['init']['gcloudcli']['url']               = "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-458.0.1-linux-x86_64.tar.gz"
+default['cloud']['init']['docker']['gcr-login']['version'] = "2.1.20"
+default['cloud']['init']['docker']['gcr-login']['url']     = "#{node['download_url']}/cloud/gcr-login/#{node['cloud']['init']['docker']['gcr-login']['version']}/docker-credential-gcr"
