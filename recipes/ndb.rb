@@ -64,14 +64,10 @@ template "#{node['cloud']['ndb-agent']['config']}/config.yml" do
     })
 end
 
-remote_directory "#{node['cloud']['ndb-agent']['templates-dir']}" do
-    source 'ndb_templates'
+directory "#{node['cloud']['ndb-agent']['templates-dir']}" do
     owner 'root'
     group 'root'
     mode 0750
-    files_owner 'root'
-    files_group 'root'
-    files_mode 0550
 end
 
 template "#{node['cloud']['ndb-agent']['templates-dir']}/join_hopsworks_cluster.sh" do

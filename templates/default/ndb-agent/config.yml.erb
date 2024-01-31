@@ -1,20 +1,14 @@
 general:
   log-level: <%= node['cloud']['ndb-agent']['log-level'] %>
-  handler-channel-size: 20
-  cluster-topology-location: <%= node['cloud']['ndb-agent']['config'] %>/cluster-topology.json
   backup-staging-directory: <%= node['ndb']['BackupDataDir'] %>
-  extra-mysqld-vms: 1
   public-state-filepath: <%= node['cloud']['ndb-agent']['config'] %>/public-state.json
   fallback-service-discovery: true
   agent-running-since-filepath: <%= node['cloud']['ndb-agent']['config'] %>/agent-running-since.txt
 
 http:
-  listen-port: 8181
   api-key: API_KEY
 
-heartbeat:
-  enabled: HEARTBEAT_ENABLED
-  endpoint: HEARTBEAT_ENDPOINT
+leader:
   is-leader: HEARTBEAT_ENABLED
   cloud-base-endpoint: HEARTBEAT_ENDPOINT
 
@@ -32,9 +26,3 @@ database:
   hostname: 127.0.0.1
   username: root
 <% end -%>
-
-plugins:
-  unmarshal:
-    Clusterpoststartunmarshal: <%= node['cloud']['ndb-agent']['bin'] %>/contrib/plugins/hopsworks_plugin.so
-  handlers:
-    Clusterpoststarthandler: <%= node['cloud']['ndb-agent']['bin'] %>/contrib/plugins/hopsworks_plugin.so
