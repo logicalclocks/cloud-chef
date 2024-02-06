@@ -48,7 +48,7 @@ default['cloud']['ndb-agent']['base_dir']                  = "#{node['cloud']['i
 default['cloud']['ndb-agent']['home']                      = "#{node['cloud']['install_dir']}/ndb-agent/ndb-agent"
 default['cloud']['ndb-agent']['bin']                       = "#{node['cloud']['ndb-agent']['home']}/bin"
 default['cloud']['ndb-agent']['config']                    = "#{node['cloud']['ndb-agent']['home']}/config"
-default['cloud']['ndb-agent']['log-level']                 = "debug"
+default['cloud']['ndb-agent']['log-level']                 = "info"
 default['cloud']['ndb-agent']['templates-dir']             = "#{node['cloud']['ndb-agent']['home']}/templates"
 
 default['cloud']['metrics']['dir']                         = "#{node["cloud"]["install_dir"]}/cloud-metrics-collector"
