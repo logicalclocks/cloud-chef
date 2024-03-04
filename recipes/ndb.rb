@@ -46,9 +46,6 @@ bash "Setup binaries" do
         tar xzf #{Chef::Config['file_cache_path']}/#{filename} -C #{Chef::Config['file_cache_path']}
         cp #{Chef::Config['file_cache_path']}/#{ndb_agent_folder}/ndb-agent #{node['cloud']['ndb-agent']['bin']}
         chmod 750 #{node['cloud']['ndb-agent']['bin']}/ndb-agent
-
-        cp -r #{Chef::Config['file_cache_path']}/#{ndb_agent_folder}/contrib #{node['cloud']['ndb-agent']['bin']}
-        chmod -R 750 #{node['cloud']['ndb-agent']['bin']}/contrib
     EOH
     not_if { File.exist? "#{node['cloud']['ndb-agent']['bin']}/ndb-agent" }
 end
@@ -67,14 +64,10 @@ template "#{node['cloud']['ndb-agent']['config']}/config.yml" do
     })
 end
 
-remote_directory "#{node['cloud']['ndb-agent']['templates-dir']}" do
-    source 'ndb_templates'
+directory "#{node['cloud']['ndb-agent']['templates-dir']}" do
     owner 'root'
     group 'root'
     mode 0750
-    files_owner 'root'
-    files_group 'root'
-    files_mode 0550
 end
 
 template "#{node['cloud']['ndb-agent']['templates-dir']}/join_hopsworks_cluster.sh" do
