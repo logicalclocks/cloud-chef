@@ -17,9 +17,9 @@ templates:
   ndb-config-target: <%= node['ndb']['root_dir'] %>/config.ini
   benchmarks-target-home: <%= node['ndb']['user-home']%>/benchmarks
 
-rondb-internal:
-  base:
-    mysqld-start-timeout: "2h"
+timeouts:
+  start-ndbds: "2h"
+  start-mysqlds: "2h"
 
 <% if @template_db_section -%>
 database:
