@@ -2,6 +2,6 @@
 set -e
 
 ## Helper script to run ec2init
-source <%= node['conda']['base_dir'] %>/bin/activate cloud
+source /root/cloud-venv/bin/activate
 
 ec2init $@

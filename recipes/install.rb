@@ -91,6 +91,17 @@ remote_file "#{Chef::Config['file_cache_path']}/#{cached_file}" do
   action :create_if_missing
 end
 
+cached_file = "ec2init-requirements.txt"
+source = "#{node['install']['enterprise']['download_url']}/ec2init/#{node['cloud']['init']['version']}/#{cached_file}"
+remote_file "#{Chef::Config['file_cache_path']}/#{cached_file}" do
+  user 'root'
+  group 'root'
+  source source
+  headers get_ee_basic_auth_header()
+  sensitive true
+  mode 0555
+end
+
 case node["platform_family"]
 when "debian"
   bash "add certbot repository" do
