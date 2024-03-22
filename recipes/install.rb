@@ -91,9 +91,9 @@ remote_file "#{Chef::Config['file_cache_path']}/#{cached_file}" do
   action :create_if_missing
 end
 
-cached_file = "ec2init-requirements.txt"
-source = "#{node['install']['enterprise']['download_url']}/ec2init/#{node['cloud']['init']['version']}/#{cached_file}"
-remote_file "#{Chef::Config['file_cache_path']}/#{cached_file}" do
+cached_file = "requirements.txt"
+source = "#{node['install']['enterprise']['download_url']}/ec2init/#{node['cloud']['init']['version']}/requirements.txt"
+remote_file "#{Chef::Config['file_cache_path']}/ec2init-requirements.txt" do
   user 'root'
   group 'root'
   source source
