@@ -172,7 +172,7 @@ when 'rhel'
   end
 end
 
-package ["curl", "unzip"] do
+package ["curl", "unzip", "python3-virtualenv"] do
   retries 10
   retry_delay 30
 end

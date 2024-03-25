@@ -2,6 +2,6 @@
 set -e
 
 ## Helper script to run ec2init
-source /root/cloud-venv/bin/activate
+source /root/<%= node['cloud']['init']['venv'] %>/bin/activate
 
 ec2init $@

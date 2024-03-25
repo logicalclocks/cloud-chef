@@ -2,6 +2,6 @@
 set -e
 
 ## Helper script to run ec2update
-source /root/cloud-venv/bin/activate
+source /root/<%= node['cloud']['init']['venv'] %>/bin/activate
 
 ec2update --config <%= node['cloud']['init']['install_dir'] %>/ec2init/ec2update.ini

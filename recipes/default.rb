@@ -1,27 +1,11 @@
-case node["platform_family"]
-when "debian"
-  package "pipx"
-  install_tool = "pipx"
-when "rhel"
-  install_tool = "pip"
-end
-
-bash "install virtualenv" do
-  user "root"
-  group "root"
-  code <<-EOF
-    #{install_tool} install virtualenv
-  EOF
-end
-
-
 bash "create virtualenv" do
     user 'root'
     group 'root'
     cwd '/root'
     code <<-EOF
       set -e
-      virtualenv cloud-venv
+      virtualenv #{node['cloud']['init']['venv']}
+      source #{node['cloud']['init']['venv']}/bin/activate
       pip install -r #{Chef::Config['file_cache_path']}/ec2init-requirements.txt
     EOF
 end
@@ -30,7 +14,7 @@ bash "install ec2init" do
     user 'root'
     group 'root'
     code <<-EOF
-      yes | /root/cloud-venv/bin/pip install --no-cache-dir --upgrade #{Chef::Config['file_cache_path']}/ec2init-#{node['cloud']['init']['version']}-py3-none-any.whl
+      yes | /root/#{node['cloud']['init']['venv']}/bin/pip install --no-cache-dir --upgrade #{Chef::Config['file_cache_path']}/ec2init-#{node['cloud']['init']['version']}-py3-none-any.whl
     EOF
     only_if "test -r #{Chef::Config['file_cache_path']}/ec2init-#{node['cloud']['init']['version']}-py3-none-any.whl"
 end
