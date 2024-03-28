@@ -147,6 +147,10 @@ when 'debian'
     action :install
     only_if { ::File.exist?(cached_file) }
   end
+  package ["python3-virtualenv"] do
+    retries 10
+    retry_delay 30
+  end
 when 'rhel'
   package "amazon-cloudwatch-agent" do
     retries 10
@@ -156,10 +160,11 @@ when 'rhel'
     only_if { ::File.exist?(cached_file) }
   end
 
-  package "snapd" do
+  package ["snapd", "python3.11", "python3.11-pip"] do
     retries 10
     retry_delay 30
   end
+
   bash 'configure-snapd' do
     user 'root'
     group 'root'
@@ -170,9 +175,19 @@ when 'rhel'
       ln -s /var/lib/snapd/snap /snap
     EOH
   end
+  bash 'Install virtualenv' do
+    user 'root'
+    group 'root'
+    code <<-EOH
+      set -e
+      # virtualenv coming from CentOS is quite old, install it through pip
+      pip3 install virtualenv
+    EOH
+  end
+
 end
 
-package ["curl", "unzip", "python3-virtualenv"] do
+package ["curl", "unzip"] do
   retries 10
   retry_delay 30
 end
