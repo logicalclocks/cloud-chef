@@ -160,6 +160,10 @@ when 'rhel'
     only_if { ::File.exist?(cached_file) }
   end
 
+  package "python36" do
+    action :remove
+  end
+  
   package ["snapd", "python3.11", "python3.11-devel", "python3.11-pip"] do
     retries 10
     retry_delay 30
