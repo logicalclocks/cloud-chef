@@ -160,7 +160,7 @@ when 'rhel'
     only_if { ::File.exist?(cached_file) }
   end
 
-  package ["snapd", "python3.11", "python3.11-pip"] do
+  package ["snapd", "python3.11", "python3.11-devel", "python3.11-pip"] do
     retries 10
     retry_delay 30
   end
