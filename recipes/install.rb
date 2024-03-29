@@ -185,7 +185,7 @@ when 'rhel'
     code <<-EOH
       set -e
       # virtualenv coming from CentOS is quite old, install it through pip
-      pip3 install virtualenv
+      pip3.11 install virtualenv
     EOH
   end
 
