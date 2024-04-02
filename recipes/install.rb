@@ -136,6 +136,39 @@ remote_file cached_file do
   only_if { node['cloud']['collect_logs'].casecmp?("true") && node['install']['cloud'].casecmp?("aws")}
 end
 
+bash 'Install pyenv' do
+  user 'root'
+  group 'root'
+  code <<-EOH
+    set -e
+    curl https://pyenv.run | bash
+    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+    echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+    echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+  EOH
+  not_if { ::File.exists?("/root/.pyenv") }
+end
+
+bash 'Install Python 3.11' do
+  user 'root'
+  group 'root'
+  environment ({'PYENV_ROOT' => '/root/.pyenv'})
+  code <<-EOH
+    set -e
+    export PATH=$PYENV_ROOT/bin:$PATH
+    eval "$(pyenv init -)"
+    set +e
+    pyenv shims --short | grep python3.11
+    r=$?
+    set -e
+    if [[ "$r" -ne 0 ]]; then
+      pyenv install 3.11
+    fi
+    pyenv shell 3.11
+    pip install virtualenv
+  EOH
+end
+
 # We can't just use package because in Ubuntu package provider cannot
 # install a deb package from source, we must use dpkg_package provider
 case node['platform_family']
@@ -164,7 +197,7 @@ when 'rhel'
     action :remove
   end
   
-  package ["snapd", "python3.11", "python3.11-devel", "python3.11-pip"] do
+  package ["snapd" ] do
     retries 10
     retry_delay 30
   end
@@ -179,16 +212,6 @@ when 'rhel'
       ln -s /var/lib/snapd/snap /snap
     EOH
   end
-  bash 'Install virtualenv' do
-    user 'root'
-    group 'root'
-    code <<-EOH
-      set -e
-      # virtualenv coming from CentOS is quite old, install it through pip
-      pip3.11 install virtualenv
-    EOH
-  end
-
 end
 
 package ["curl", "unzip"] do
