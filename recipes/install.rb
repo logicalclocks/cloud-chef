@@ -209,7 +209,7 @@ when 'rhel'
       set -e
       systemctl enable --now snapd.socket
       # enable classic snap support
-      ln -s /var/lib/snapd/snap /snap
+      [[ -e /snap ]] || ln -s /var/lib/snapd/snap /snap
     EOH
   end
 end
@@ -229,7 +229,7 @@ bash 'install-certbot' do
     # and we need to login to initialize it
     sudo snap install core; sudo snap refresh core
     sudo snap install --classic certbot
-    ln -s /snap/bin/certbot /usr/bin/certbot
+    [[ -e /usr/bin/certbot ]] || ln -s /snap/bin/certbot /usr/bin/certbot
   EOH
 end
 
