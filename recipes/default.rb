@@ -1,12 +1,13 @@
-bash "create virtualenv" do
+bash "create Cloud virtualenv" do
     user 'root'
     group 'root'
     cwd '/root'
+    environment ({'PYENV_ROOT' => '/root/.pyenv'})
     code <<-EOF
       set -e
-      # In CentOS virtualenv installed in /usr/local/bin which is not in the PATH unless if you login
-      # Chef bash resources
-      PATH=$PATH:/usr/local/bin
+      export PATH=$PYENV_ROOT/bin:$PATH
+      eval "$(pyenv init -)"
+      pyenv shell 3.11
       virtualenv #{node['cloud']['init']['venv']}
       source #{node['cloud']['init']['venv']}/bin/activate
       pip install -r #{Chef::Config['file_cache_path']}/ec2init-requirements.txt
