@@ -116,13 +116,21 @@ when "debian"
   end
   systemd_directory = "/lib/systemd/system"
   os_flavour = "ubuntu"
-when "rhel"
-  package "epel-release" do
+
+  package ["build-essential", "libssl-dev", "zlib1g-dev"] do
     retries 10
     retry_delay 30
   end
+
+when "rhel"
   systemd_directory = "/usr/lib/systemd/system"
   os_flavour = "centos"
+
+  package ["epel-release", "gcc", "gcc-c++", "openssl", "openssl-devel", "openssl-libs"] do
+    retries 10
+    retry_delay 30
+  end
+  
 end
 
 filename = File.basename(node['cloud']['cloudwatch']['download_url'][os_flavour])
