@@ -117,7 +117,7 @@ when "debian"
   systemd_directory = "/lib/systemd/system"
   os_flavour = "ubuntu"
 
-  package ["build-essential", "libssl-dev", "zlib1g-dev"] do
+  package ["build-essential", "libssl-dev", "zlib1g-dev", "libffi-dev", "libbz2-dev", "libreadline-dev", "liblzma-dev"] do
     retries 10
     retry_delay 30
   end
@@ -126,7 +126,7 @@ when "rhel"
   systemd_directory = "/usr/lib/systemd/system"
   os_flavour = "centos"
 
-  package ["epel-release", "gcc", "gcc-c++", "openssl", "openssl-devel", "openssl-libs"] do
+  package ["epel-release", "gcc", "gcc-c++", "openssl", "openssl-devel", "openssl-libs", "libffi-devel", "bzip2-devel", "readline-devel", "xz-devel"] do
     retries 10
     retry_delay 30
   end
