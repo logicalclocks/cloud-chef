@@ -200,10 +200,6 @@ when 'rhel'
     action :install
     only_if { ::File.exist?(cached_file) }
   end
-
-  package "python36" do
-    action :remove
-  end
   
   package ["snapd" ] do
     retries 10
