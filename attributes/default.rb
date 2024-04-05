@@ -17,7 +17,7 @@ default['cloud']['data_volume']['ec2init_checks']          = "#{node['cloud']['d
 
 default['cloud']['init']['install_dir']                    = '/root'
 default['cloud']['init']['venv']                           = "cloud-venv"
-default['cloud']['init']['version']                        = '0.19'
+default['cloud']['init']['version']                        = '0.19.1'
 
 default['cloud']['init']['config']['hosted_zone']          = "cloud.hopsworks.ai"
 default['cloud']['init']['config']['lets_encrypt_dir']     = "/etc/letsencrypt"
