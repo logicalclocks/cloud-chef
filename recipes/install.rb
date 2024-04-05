@@ -91,6 +91,17 @@ remote_file "#{Chef::Config['file_cache_path']}/#{cached_file}" do
   action :create_if_missing
 end
 
+cached_file = "requirements.txt"
+source = "#{node['install']['enterprise']['download_url']}/ec2init/#{node['cloud']['init']['version']}/requirements.txt"
+remote_file "#{Chef::Config['file_cache_path']}/ec2init-requirements.txt" do
+  user 'root'
+  group 'root'
+  source source
+  headers get_ee_basic_auth_header()
+  sensitive true
+  mode 0555
+end
+
 case node["platform_family"]
 when "debian"
   bash "add certbot repository" do
@@ -105,13 +116,21 @@ when "debian"
   end
   systemd_directory = "/lib/systemd/system"
   os_flavour = "ubuntu"
-when "rhel"
-  package "epel-release" do
+
+  package ["build-essential", "libssl-dev", "zlib1g-dev", "libffi-dev", "libbz2-dev", "libreadline-dev", "liblzma-dev"] do
     retries 10
     retry_delay 30
   end
+
+when "rhel"
   systemd_directory = "/usr/lib/systemd/system"
   os_flavour = "centos"
+
+  package ["epel-release", "gcc", "gcc-c++", "openssl", "openssl-devel", "openssl-libs", "libffi-devel", "bzip2-devel", "readline-devel", "xz-devel"] do
+    retries 10
+    retry_delay 30
+  end
+  
 end
 
 filename = File.basename(node['cloud']['cloudwatch']['download_url'][os_flavour])
@@ -125,6 +144,39 @@ remote_file cached_file do
   only_if { node['cloud']['collect_logs'].casecmp?("true") && node['install']['cloud'].casecmp?("aws")}
 end
 
+bash 'Install pyenv' do
+  user 'root'
+  group 'root'
+  code <<-EOH
+    set -e
+    curl https://pyenv.run | bash
+    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+    echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+    echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+  EOH
+  not_if { ::File.exists?("/root/.pyenv") }
+end
+
+bash 'Install Python 3.11' do
+  user 'root'
+  group 'root'
+  environment ({'PYENV_ROOT' => '/root/.pyenv'})
+  code <<-EOH
+    set -e
+    export PATH=$PYENV_ROOT/bin:$PATH
+    eval "$(pyenv init -)"
+    set +e
+    pyenv shims --short | grep python3.11
+    r=$?
+    set -e
+    if [[ "$r" -ne 0 ]]; then
+      pyenv install 3.11
+    fi
+    pyenv shell 3.11
+    pip install virtualenv
+  EOH
+end
+
 # We can't just use package because in Ubuntu package provider cannot
 # install a deb package from source, we must use dpkg_package provider
 case node['platform_family']
@@ -136,6 +188,10 @@ when 'debian'
     action :install
     only_if { ::File.exist?(cached_file) }
   end
+  package ["python3-virtualenv"] do
+    retries 10
+    retry_delay 30
+  end
 when 'rhel'
   package "amazon-cloudwatch-agent" do
     retries 10
@@ -144,11 +200,12 @@ when 'rhel'
     action :install
     only_if { ::File.exist?(cached_file) }
   end
-
-  package "snapd" do
+  
+  package ["snapd" ] do
     retries 10
     retry_delay 30
   end
+
   bash 'configure-snapd' do
     user 'root'
     group 'root'
@@ -156,7 +213,7 @@ when 'rhel'
       set -e
       systemctl enable --now snapd.socket
       # enable classic snap support
-      ln -s /var/lib/snapd/snap /snap
+      [[ -e /snap ]] || ln -s /var/lib/snapd/snap /snap
     EOH
   end
 end
@@ -176,7 +233,7 @@ bash 'install-certbot' do
     # and we need to login to initialize it
     sudo snap install core; sudo snap refresh core
     sudo snap install --classic certbot
-    ln -s /snap/bin/certbot /usr/bin/certbot
+    [[ -e /usr/bin/certbot ]] || ln -s /snap/bin/certbot /usr/bin/certbot
   EOH
 end
 
