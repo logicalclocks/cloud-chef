@@ -2,5 +2,5 @@ source 'https://supermarket.chef.io'
 
 metadata
 
-cookbook 'conda', github: "logicalclocks/conda-chef", branch: "3.7"
-cookbook 'kagent', github: "logicalclocks/kagent-chef", branch: "3.7"
+cookbook 'conda', github: "logicalclocks/conda-chef", tag: "v3.7.2"
+cookbook 'kagent', github: "logicalclocks/kagent-chef", tag: "v3.7.2"
