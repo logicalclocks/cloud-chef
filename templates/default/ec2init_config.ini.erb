@@ -24,6 +24,8 @@ onlinefs_token_file = <%= node['onlinefs']['token'] %>
 data_mount_point = <%= node['cloud']['data_volume']['mount-point'] %>
 docker_memory_size_multiplier = <%= node['cloud']['init']['docker']['memory']['hard-limit-multiplier'] %>
 docker_memory_size_soft_multiplier = <%= node['cloud']['init']['docker']['memory']['soft-limit-multiplier'] %>
+airflow_user_email = <%= node['airflow']['hopsworks']['email'] %>
+airflow_user_password = <%= node['airflow']['hopsworks']['password'] %>
 
 [upgradeplan]
 hops_versions = <%= node['hops']['versions']%>,<%= node['hops']['version'].sub("-SNAPSHOT", "").split("-")[0]%>
