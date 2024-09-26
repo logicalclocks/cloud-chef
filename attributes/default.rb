@@ -8,6 +8,7 @@ include_attribute "hive2"
 include_attribute "onlinefs"
 include_attribute "epipe"
 include_attribute "hopsmonitor"
+include_attribute "hops_airflow"
 
 default["cloud"]["install_dir"]                            = node["install"]["dir"].empty? ? "/srv/hops" : node["install"]["dir"]
 # Data volume directories
