@@ -1,0 +1,8 @@
+# HTTP endpoint to satisfy ALB health check for routing port 80 (certbot)
+server {
+listen 1337 default_server;
+    listen [::]:1337 default_server;
+    location / {
+        return 200;
+    }
+}
