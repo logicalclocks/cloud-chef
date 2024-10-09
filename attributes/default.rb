@@ -18,7 +18,7 @@ default['cloud']['data_volume']['ec2init_checks']          = "#{node['cloud']['d
 
 default['cloud']['init']['install_dir']                    = '/root'
 default['cloud']['init']['venv']                           = "cloud-venv"
-default['cloud']['init']['version']                        = '0.20'
+default['cloud']['init']['version']                        = '0.21'
 
 default['cloud']['init']['config']['hosted_zone']          = "cloud.hopsworks.ai"
 default['cloud']['init']['config']['lets_encrypt_dir']     = "/etc/letsencrypt"
@@ -45,7 +45,7 @@ default['cloud']['cloudwatch']['download_url']['ubuntu']   = "https://s3.amazona
 default['cloud']['cloudwatch']['download_url']['centos']   = "https://s3.amazonaws.com/amazoncloudwatch-agent/centos/amd64/#{node['cloud']['cloudwatch']['agent_version']}/amazon-cloudwatch-agent.rpm"
 
 default['cloud']['init']['expat_dir']                      = "#{node['cloud']['init']['install_dir']}/expat"
-default['cloud']['ndb-agent']['version']                   = "0.12.0-SNAPSHOT"
+default['cloud']['ndb-agent']['version']                   = "0.12.0"
 default['cloud']['ndb-agent']['base_dir']                  = "#{node['cloud']['install_dir']}/ndb-agent/ndb-agent-#{node['cloud']['ndb-agent']['version']}"
 default['cloud']['ndb-agent']['home']                      = "#{node['cloud']['install_dir']}/ndb-agent/ndb-agent"
 default['cloud']['ndb-agent']['bin']                       = "#{node['cloud']['ndb-agent']['home']}/bin"
